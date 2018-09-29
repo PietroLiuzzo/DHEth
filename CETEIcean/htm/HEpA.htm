@@ -12,7 +12,29 @@
     <script src="../js/CETEI.js"></script>
     <script>
       var CETEIcean = new CETEI();
-      CETEIcean.getHTML5('../xml/HEpA.xml', function(data) {
+
+      CETEIcean.addBehaviors({"handlers":{
+        // Overrides the default ptr behavior, displaying a short link
+        "ptr": function(elt) {
+          var link = document.createElement("a");
+          link.innerHTML = elt.getAttribute("target").replace(/https?:\/\/([^\/]+)\/.*/, "$1");
+          link.href = elt.getAttribute("target");
+          return link;
+        },
+        "choice": function(elt) {
+          var choice = document.createElement("b");
+          choice.innerHTML = elt.getElement("sic").text();
+          return choice;
+        },
+        
+        // Inserts the first array element before tei:add, and the second, after.
+        "add": ["`","´"],
+        "surplus": ["{","}"],
+        "supplied[reason='omitted']": ["<",">"],
+        "supplied[reason='lost']": ["[","]"]
+      }});
+
+      CETEIcean.getHTML5('https://raw.githubusercontent.com/PietroLiuzzo/DHEth/master/CETEIcean/xml/HEpA.xml', function(data) {
         document.getElementById("TEI").innerHTML = "";
         document.getElementById("TEI").appendChild(data);
         CETEIcean.addStyle(document, data);

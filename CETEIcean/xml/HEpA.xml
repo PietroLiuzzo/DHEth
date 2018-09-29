@@ -76,20 +76,47 @@ type="application/xml" schematypens="http://purl.oclc.org/dsdl/schematron"?>
             
             <div type="edition" xml:lang="gez" xml:id="etiopica">
                 <div type="textpart" subtype="chapter" n="30" xml:id="chapter30Eth">
-                    <ab>ወእንዘ፡ ያንጐርጐሩ፡ ብዙኃን፡ በእንተ፡ 
-                        <app><lem wit="#Σ">ዘኢይባቍዕ፡</lem>
-                            <note><foreign xml:lang="la">fortasse in</foreign> ዘኢይበቍዕ፡ <foreign xml:lang="la">emendandum</foreign></note>
-                        </app> 
+                    <ab>
+                        ወእንዘ፡ ያንጐርጐሩ፡ ብዙኃን፡ በእንተ፡
                         <app>
-                            <lem wit="#Σ">ሢመተ፡</lem>
-                            
-                            <rdg resp="AB"><note>pro</note> ሢመት፡</rdg>
-                        </app> 
-                        ቦእለ፡ ሮጹ፡ <app><lem wit="#Σ"><choice><orig>ሰብእ፡</orig><reg>ሰብአ፡</reg></choice></lem></app> 
-                        ቤተ፡ ክርስቲያን፡ እለ፡ አለክስንድርያ፡ ወነገ ርዎሙ፡ ለኤጲስቆጶሳት፡ በቤተ፡ ሞቅሕ፡ ድፍረቶ፡ ለሜሊጢስ። ወሰሚ ዖሙ፡ 
-                        <app><lem wit="#Σ">አፈድ<choice><corr resp="AB">ፈ</corr><sic>ፋ</sic></choice>ዱ፡</lem></app> 
-                        ሐዚነ፡ በእንተ፡ እከየ፡ ትዝልፍቱ፡ ወሐሊዮሙ፡ ዘ ንተ፡ ከመ፡ ኢሀሎ፡ 
-                        ለበቍዔት፡ ይብጻሕ፡ ጸሐፉ፡ ሎቱ፡ መጽሐፍ፡ እን ተ፡ ትብል፡ ከመዝ፡</ab>
+                            <lem wit="#Σ">ዘኢይባቍዕ፡</lem>
+                            <note>
+                                <foreign xml:lang="la">fortasse in</foreign>
+                                ዘኢይበቍዕ፡
+                                <foreign xml:lang="la">emendandum</foreign>
+                            </note>
+                        </app>
+                        ሢመ
+                        <app>
+                            <lem wit="#Σ">
+                                <choice>
+                                    <corr resp="AB">ት፡</corr>
+                                    <sic>ተ፡</sic>
+                                </choice>
+                            </lem>
+                        </app>
+                        ቦእለ፡ ሮጹ፡
+                        <app>
+                            <lem wit="#Σ">
+                                <choice>
+                                    <orig>ሰብእ፡</orig>
+                                    <reg>ሰብአ፡</reg>
+                                </choice>
+                            </lem>
+                        </app>
+                        ቤተ፡ ክርስቲያን፡ እለ፡ አለክስንድርያ፡ ወነገ ርዎሙ፡ ለኤጲስቆጶሳት፡ በቤተ፡ ሞቅሕ፡ ድፍረቶ፡ ለሜሊጢስ። ወሰሚ ዖሙ፡
+                        <app>
+                            <lem wit="#Σ">
+                                አፈድ
+                                <choice>
+                                    <corr resp="AB">ፈ</corr>
+                                    <sic>ፋ</sic>
+                                </choice>
+                                ዱ፡
+                            </lem>
+                        </app>
+                        ሐዚነ፡ በእንተ፡ እከየ፡ ትዝልፍቱ፡ ወሐሊዮሙ፡ ዘ ንተ፡ ከመ፡ ኢሀሎ፡ ለበቍዔት፡ ይብጻሕ፡ ጸሐፉ፡ ሎቱ፡ መጽሐፍ፡ እን ተ፡ ትብል፡ ከመዝ፡
+                    </ab>
                 </div>
                 
                 <div type="textpart" subtype="chapter" n="31" xml:id="chapter31Eth">
