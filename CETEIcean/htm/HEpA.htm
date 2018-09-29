@@ -23,10 +23,13 @@
         },
         "choice": function(elt) {
           var choice = document.createElement("b");
-          choice.innerHTML = elt.getElement("sic").text();
-          return choice;
+          if(elt.getElementsByName('sic')){
+          choice.innerHTML = elt.getElementbyName("sic").text();
+          return choice;}
+          else   choice.innerHTML = elt.getElementbyName("reg").text();
+            return choice;
         },
-        
+
         // Inserts the first array element before tei:add, and the second, after.
         "add": ["`","´"],
         "surplus": ["{","}"],

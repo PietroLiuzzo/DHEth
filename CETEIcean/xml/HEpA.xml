@@ -86,23 +86,15 @@ type="application/xml" schematypens="http://purl.oclc.org/dsdl/schematron"?>
                                 <foreign xml:lang="la">emendandum</foreign>
                             </note>
                         </app>
-                      <app>
-                            <lem wit="#Σ">
                                   ሢመ<choice>
                                     <corr resp="AB">ት፡</corr>
                                     <sic>ተ፡</sic>
                                 </choice>
-                            </lem>
-                        </app>
                         ቦእለ፡ ሮጹ፡
-                       <app>
-                            <lem wit="#Σ">
                                  ሰብ<choice>
                                     <orig>እ፡</orig>
                                     <reg>አ፡</reg>
                                 </choice>
-                            </lem>
-                        </app>
                         ቤተ፡ ክርስቲያን፡ እለ፡ አለክስንድርያ፡ ወነገ ርዎሙ፡ ለኤጲስቆጶሳት፡ በቤተ፡ ሞቅሕ፡ ድፍረቶ፡ ለሜሊጢስ። ወሰሚ ዖሙ፡
                         <app>
                             <lem wit="#Σ">
