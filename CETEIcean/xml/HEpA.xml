@@ -77,7 +77,7 @@ type="application/xml" schematypens="http://purl.oclc.org/dsdl/schematron"?>
             <div type="edition" xml:lang="gez" xml:id="etiopica">
                 <div type="textpart" subtype="chapter" n="30" xml:id="chapter30Eth">
                     <ab>
-                        ወእንዘ፡ ያንጐርጐሩ፡ ብዙኃን፡ በእንተ፡
+                        ወእንዘ፡ ያንጐርጐሩ፡ ብዙኃን፡ በእንተ፡ 
                         <app>
                             <lem wit="#Σ">ዘኢይባቍዕ፡</lem>
                             <note>
@@ -86,21 +86,20 @@ type="application/xml" schematypens="http://purl.oclc.org/dsdl/schematron"?>
                                 <foreign xml:lang="la">emendandum</foreign>
                             </note>
                         </app>
-                        ሢመ
-                        <app>
+                      <app>
                             <lem wit="#Σ">
-                                <choice>
+                                  ሢመ<choice>
                                     <corr resp="AB">ት፡</corr>
                                     <sic>ተ፡</sic>
                                 </choice>
                             </lem>
                         </app>
                         ቦእለ፡ ሮጹ፡
-                        <app>
+                       <app>
                             <lem wit="#Σ">
-                                <choice>
-                                    <orig>ሰብእ፡</orig>
-                                    <reg>ሰብአ፡</reg>
+                                 ሰብ<choice>
+                                    <orig>እ፡</orig>
+                                    <reg>አ፡</reg>
                                 </choice>
                             </lem>
                         </app>
