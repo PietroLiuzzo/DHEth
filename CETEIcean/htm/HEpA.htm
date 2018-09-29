@@ -14,6 +14,7 @@
       var CETEIcean = new CETEI();
 
       CETEIcean.addBehaviors({"handlers":{
+
         // Overrides the default ptr behavior, displaying a short link
         "ptr": function(elt) {
           var link = document.createElement("a");
@@ -23,7 +24,7 @@
         },
         "choice": function(elt) {
           var choice = document.createElement("b");
-          if(elt.getElementsByName('sic')){
+          if(elt.getElementByName('sic')){
           choice.innerHTML = elt.getElementbyName("sic").text();
           return choice;}
           else   choice.innerHTML = elt.getElementbyName("reg").text();
