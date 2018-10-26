@@ -14,10 +14,9 @@ declare variable $local:range-lookup :=
     )[1];
 
 declare function local:indexKeys($dataset, $datasetname, $vocabulary, $element){
-let $languagesSelector := if($datasetname = 'Ethio' or $datasetname = 'ISicily' ) then distinct-values($dataset/ancestor::t:TEI//t:language/@ident) else distinct-values($dataset/ancestor::t:TEI//t:div[@type='edition']/@xml:lang)
-let $languages := for $lang in $languagesSelector
-                           return if($lang='en' or $lang='it' or $lang='de') then () else $lang
-let $headings := ('languages', $languages)
+let $objects := distinct-values($dataset/ancestor::t:TEI//t:objectType/@ref)
+let $objectLabels := for $m in $objects return  doc(concat($config:data-root, '/EAGLEvoc/eagle-vocabulary-object-type.rdf'))//skos:Concept[@rdf:about = $m]/skos:prefLabel/text()
+let $headings := ('objects', $objectLabels)
 let $head:='["'||string-join($headings, '","') ||'"]'
 let $selector := '$dataset/ancestor::t:TEI//t:' || $element || '/@ref'
 let $selection := util:eval($selector)
@@ -28,10 +27,8 @@ let $items := for $item in distinct-values($selection)
                             let $Mlabel := $M/skos:prefLabel/text()
                             return map{'label':= $Mlabel, 'uri' := $item}
 let $rows := for $item in $items
-                         let $counts := for $lang in $languages
-                                                       let $selector := if($datasetname = 'Ethio' or $datasetname = 'ISicily' ) 
-                                                       then '$dataset/ancestor::t:TEI[descendant::t:' || $element || '[@ref=$item("uri")]][descendant::t:language[@ident = $lang]]' else 
-                                                       '$dataset/ancestor::t:TEI[descendant::t:' || $element || '[@ref=$item("uri")]][descendant::t:div[@type="edition"][@xml:lang = $lang]]'
+                         let $counts := for $obj in $objects
+                                                       let $selector :=  '$dataset/ancestor::t:TEI[descendant::t:' || $element || '[@ref=$item("uri")]][descendant::t:objectType[@ref=$obj]]'
                                                        let $selection := util:eval($selector)
                                                         return
                                                         count($selection)
@@ -55,7 +52,7 @@ declare function local:chart($name, $datasetname, $table){
          || ");
 
           var options = {
-            title: '"||$name||" by language "||$datasetname||"',
+            title: '"||$name||" by object type "||$datasetname||"',
        isStacked: true,
           height: 300,
           legend: {position: 'top', maxLines: 3},
@@ -69,25 +66,13 @@ declare function local:chart($name, $datasetname, $table){
         }
 
       </script>
-      <div class="col-md-3" xmlns="http://www.w3.org/1999/xhtml" id="{$name}byLang_{$datasetname}" style="height:500px;"/>
+      <div class="col-md-12" xmlns="http://www.w3.org/1999/xhtml" id="{$name}byLang_{$datasetname}" style="height:500px;"/>
       </div>
 };
         
-let $EAGLE300to700 := collection(concat($config:data-root, '/EAGLE'))//t:origDate[@notBefore-custom gt 0300][@notAfter-custom lt 0700]
-let $AGP300to700 := collection(concat($config:data-root, '/EAGLE/AGP'))//t:origDate[@notBefore-custom gt 0300][@notAfter-custom lt 0700]
-let $Ausonius300to700 := collection(concat($config:data-root, '/EAGLE/AUSONIUS'))//t:origDate[@notBefore-custom gt 0300][@notAfter-custom lt 0700]
-let $BSR300to700 := collection(concat($config:data-root, '/EAGLE/BSR'))//t:origDate[@notBefore-custom gt 0300][@notAfter-custom lt 0700]
-let $EDB300to700 := collection(concat($config:data-root, '/EAGLE/EDB'))//t:origDate[@notBefore-custom gt 0300][@notAfter-custom lt 0700]
-let $EDH300to700 := collection(concat($config:data-root, '/EAGLE/edh'))//t:origDate[@notBefore-custom gt 0300][@notAfter-custom lt 0700]
-let $EDR300to700 := collection(concat($config:data-root, '/EAGLE/EDR'))//t:origDate[@notBefore-custom gt 0300][@notAfter-custom lt 0700]
-let $LSA300to700 := collection(concat($config:data-root, '/EAGLE/LSA'))//t:origDate[@notBefore-custom gt 0300][@notAfter-custom lt 0700]
-let $RIB300to700 := collection(concat($config:data-root, '/EAGLE/RIB'))//t:origDate[@notBefore-custom gt 0300][@notAfter-custom lt 0700]
-let $ISicily300to700 := collection(concat($config:data-root, '/ISicily'))//t:origDate[@notBefore-custom gt 0300][@notAfter-custom lt 0700]
-let $AshLI300to700 := (
-collection(concat($config:data-root, '/EAGLE/AshLI'))//t:origDate[xs:integer(@notBefore) gt 0300][xs:integer(@notAfter) lt 0700],
-
-collection(concat($config:data-root, '/EAGLE/AshLI'))//t:origDate[xs:integer(@when) gt 0300][xs:integer(@when) lt 0700]
-)
+let $EAGLE300to700 := collection(concat($config:data-root, '/EAGLE'))//t:origDate[@notBefore-custom ge 0300][@notAfter-custom le 0700]
+let $ISicily300to700 := collection(concat($config:data-root, '/ISicily'))//t:origDate[@notBefore-custom ge 0300][@notAfter-custom le 0700]
+let $TM300to700 := collection(concat($config:data-root, '/trismegistos'))//t:origDate[@notBefore-custom ge 0300][@notAfter-custom le 0700]
 let $Ethio300to700 := collection(concat($config:data-root, '/Ethiopic'))//t:origDate
 
 return
@@ -99,19 +84,11 @@ return
     </head>
  <body>
     {
-for $datasetname in ('Ethio','ISicily','EAGLE','BSR','EDB','EDR','EDH','LSA','RIB', 'Ausonius', 'AshLI')
+for $datasetname in ('EAGLE', 'trismegistos', 'ISicily', 'Ethio')
 let $dataset := switch($datasetname)
 case 'EAGLE' return $EAGLE300to700
-case 'Ausonius' return $Ausonius300to700
 case 'ISicily' return $ISicily300to700
-case 'AshLI' return $AshLI300to700
-case 'BSR' return $BSR300to700
-case 'EDB' return $EDB300to700
-case 'EDH' return $EDH300to700
-case 'EDR' return $EDR300to700
-case 'LSA' return $LSA300to700
-case 'RIB' return $RIB300to700
-case 'ISicily' return $ISicily300to700
+case 'trismegistos' return $TM300to700
 default return $Ethio300to700
 return
 <div class="col-md-12">
@@ -120,11 +97,7 @@ return
 
 let $table := local:indexKeys($dataset, $datasetname,'material','material')
 return
-local:chart('material', $datasetname, $table)
-,
-let $table := local:indexKeys($dataset, $datasetname,'object-type','objectType')
-return
-local:chart('objectType', $datasetname, $table),
+local:chart('material', $datasetname, $table),
 let $table := local:indexKeys($dataset, $datasetname,'writing','rs[@type="execution"]')
 return
 local:chart('execution', $datasetname, $table),

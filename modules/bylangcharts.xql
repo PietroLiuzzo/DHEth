@@ -13,18 +13,36 @@ declare variable $local:range-lookup :=
         function-lookup(xs:QName("range:index-keys-for-field"), 3)
     )[1];
 
-declare function local:indexKeys($dataset, $datasetname, $vocabulary, $indexName){
-let $start := if(($vocabulary = 'writing') and ($datasetname != 'Ethio')) then 'http://www.eagle-network.eu/voc/writing/' else ()
+declare function local:indexKeys($dataset, $datasetname, $vocabulary, $element){
+let $languagesSelector := if($datasetname = 'Ethio' or $datasetname = 'ISicily' or $datasetname = 'trismegistos' ) then distinct-values($dataset/ancestor::t:TEI//t:language/@ident) else distinct-values($dataset/ancestor::t:TEI//t:div[@type='edition']/@xml:lang)
+let $languages := for $lang in $languagesSelector
+                           return if($lang='en' or $lang='it' or $lang='de') then () else $lang
+let $headings := ('languages', $languages)
+let $head:='["'||string-join($headings, '","') ||'"]'
+let $selector := '$dataset/ancestor::t:TEI//t:' || $element || '/@ref'
+let $selection := util:eval($selector)
+let $items := for $item in distinct-values($selection)
+                             let $start := if(starts-with($item, 'http:')) then replace($item, 'http:', 'https:') else $item
+
+                            let $M := doc(concat($config:data-root, '/EAGLEvoc/eagle-vocabulary-',$vocabulary,'.rdf'))//skos:Concept[@rdf:about = $start]
+                            let $Mlabel := $M/skos:prefLabel/text()
+                            return map{'label':= $Mlabel, 'uri' := $item}
+let $rows := for $item in $items
+                         let $counts := for $lang in $languages
+                                                       let $selector := if($datasetname = 'Ethio' or $datasetname = 'ISicily' or $datasetname = 'trismegistos' ) 
+                                                       then '$dataset/ancestor::t:TEI[descendant::t:' || $element || '[@ref=$item("uri")]][descendant::t:language[@ident = $lang]]' else 
+                                                       '$dataset/ancestor::t:TEI[descendant::t:' || $element || '[@ref=$item("uri")]][descendant::t:div[@type="edition"][@xml:lang = $lang]]'
+                                                       let $selection := util:eval($selector)
+                                                        return
+                                                        count($selection)
+                        
+                        return
+                       '["' || $item('label') ||'",'|| string-join($counts, ',') || ']'
+ let $data := ($head,$rows)
+ 
 return
-$dataset/$local:range-lookup($indexName, $start,
-        function($key, $count) {
-        let $K := replace($key, 'http:', 'https:')
-        let $name := doc(concat($config:data-root, '/EAGLEvoc/eagle-vocabulary-',$vocabulary,'.rdf'))//skos:Concept[@rdf:about = $K]
-        let $N := $name/skos:prefLabel/text()
-        return
-         '["' ||  $N || '", ' ||  $count[2] || ']'
-        }, 1000)
-        };
+'[' || string-join($data, ',') || ']'
+};
         
 declare function local:chart($name, $datasetname, $table){
 <div xmlns="http://www.w3.org/1999/xhtml">
@@ -34,31 +52,34 @@ declare function local:chart($name, $datasetname, $table){
         function drawChart() {
           var data = google.visualization.arrayToDataTable(' ||
           $table
-         || "]);
+         || ");
 
           var options = {
-            title: '"||$name||" breakdown for "||$datasetname||"'
-          };
+            title: '"||$name||" by language "||$datasetname||"',
+       isStacked: true,
+          height: 300,
+          legend: {position: 'top', maxLines: 3},
+          vAxis: {minValue: 0}
+      };
 
-          var chart = new google.visualization.PieChart(document.getElementById('"||$name||"pie_"||$datasetname||"'));
+          var chart = new google.visualization.ColumnChart(document.getElementById('"||$name||"byLang_"||$datasetname||"'));
           chart.draw(data, options);
         }"
 
         }
 
       </script>
-      <div   class="col-md-3" xmlns="http://www.w3.org/1999/xhtml" id="{$name}pie_{$datasetname}" style="height:500px;"/>
+      <div class="col-md-3" xmlns="http://www.w3.org/1999/xhtml" id="{$name}byLang_{$datasetname}" style="height:500px;"/>
       </div>
-      
 };
         
 let $EAGLE300to700 := collection(concat($config:data-root, '/EAGLE'))//t:origDate[@notBefore-custom ge 0300][@notAfter-custom le 0700]
 let $AGP300to700 := collection(concat($config:data-root, '/EAGLE/AGP'))//t:origDate[@notBefore-custom ge 0300][@notAfter-custom le 0700]
-let $Ausonius300to700 := collection(concat($config:data-root, '/EAGLE/AUSONIUS'))//t:origDate[@notBefore-custom gt 0300][@notAfter-custom le 0700]
+let $Ausonius300to700 := collection(concat($config:data-root, '/EAGLE/AUSONIUS'))//t:origDate[@notBefore-custom ge 0300][@notAfter-custom le 0700]
 let $BSR300to700 := collection(concat($config:data-root, '/EAGLE/BSR'))//t:origDate[@notBefore-custom ge 0300][@notAfter-custom le 0700]
 let $EDB300to700 := collection(concat($config:data-root, '/EAGLE/EDB'))//t:origDate[@notBefore-custom ge 0300][@notAfter-custom le 0700]
-let $EDR300to700 := collection(concat($config:data-root, '/EAGLE/EDR'))//t:origDate[@notBefore-custom ge 0300][@notAfter-custom le 0700]
 let $EDH300to700 := collection(concat($config:data-root, '/EAGLE/edh'))//t:origDate[@notBefore-custom ge 0300][@notAfter-custom le 0700]
+let $EDR300to700 := collection(concat($config:data-root, '/EAGLE/EDR'))//t:origDate[@notBefore-custom ge 0300][@notAfter-custom le 0700]
 let $LSA300to700 := collection(concat($config:data-root, '/EAGLE/LSA'))//t:origDate[@notBefore-custom ge 0300][@notAfter-custom le 0700]
 let $RIB300to700 := collection(concat($config:data-root, '/EAGLE/RIB'))//t:origDate[@notBefore-custom ge 0300][@notAfter-custom le 0700]
 let $ISicily300to700 := collection(concat($config:data-root, '/ISicily'))//t:origDate[@notBefore-custom ge 0300][@notAfter-custom le 0700]
@@ -79,18 +100,17 @@ return
     </head>
  <body>
     {
-for $datasetname in ('Ethio','ISicily','EAGLE','BSR','EDB','EDH','EDR','LSA','RIB', 'Ausonius', 'AshLI', 'trismegistos')
+for $datasetname in ('Ethio','ISicily','EAGLE','BSR','EDB','EDH','EDR','LSA','RIB', 'Ausonius', 'AshLI','trismegistos')
 let $dataset := switch($datasetname)
 case 'EAGLE' return $EAGLE300to700
 case 'Ausonius' return $Ausonius300to700
 case 'ISicily' return $ISicily300to700
-case 'AGP' return $AGP300to700
+case 'AshLI' return $AshLI300to700
 case 'BSR' return $BSR300to700
-case 'EDH' return $EDH300to700
 case 'EDB' return $EDB300to700
+case 'EDH' return $EDH300to700
 case 'EDR' return $EDR300to700
 case 'LSA' return $LSA300to700
-case 'AshLI' return $AshLI300to700
 case 'RIB' return $RIB300to700
 case 'ISicily' return $ISicily300to700
 case 'trismegistos' return $TM300to700
@@ -99,29 +119,18 @@ return
 <div class="col-md-12">
 <p class="lead">{$datasetname} (total inscriptions 300 to 700 CE: {count($dataset)})</p>
 {(
-let $rows :=( '[["material","quantity"]',
-local:indexKeys($dataset, $datasetname,'material','materialRef'))
-let $table := string-join($rows, ',
-')
+
+let $table := local:indexKeys($dataset, $datasetname,'material','material')
 return
 local:chart('material', $datasetname, $table)
 ,
-let $rows :=('[["object type","quantity"]',
-local:indexKeys($dataset, $datasetname,'object-type','objRef'))
-let $table := string-join($rows, ',
-')
+let $table := local:indexKeys($dataset, $datasetname,'object-type','objectType')
 return
 local:chart('objectType', $datasetname, $table),
-let $rows :=('[["execution tecnique","quantity"]',
-local:indexKeys($dataset, $datasetname,'writing','rsRef'))
-let $table := string-join($rows, ',
-')
+let $table := local:indexKeys($dataset, $datasetname,'writing','rs[@type="execution"]')
 return
 local:chart('execution', $datasetname, $table),
-let $rows :=('[["type of inscription","quantity"]',
-local:indexKeys($dataset, $datasetname,'type-of-inscription','termRef'))
-let $table := string-join($rows, ',
-')
+let $table := local:indexKeys($dataset, $datasetname,'type-of-inscription','term')
 return
 local:chart('type', $datasetname, $table)
 )}</div>}
