@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+  <Placemark>
+    <address>p.simi</address>
+    <description>A place in Fra Mauro Map</description>
+    <name>http://betamasaheft.eu/places/LOC5671Semen</name>
+    <Point>
+      <coordinates>38.3173145,13.1012677</coordinates>
+    </Point>
+    <TimeSpan>
+      <begin>1390</begin>
+      <end>1450</end>
+    </TimeSpan>
+  </Placemark>
+</kml>
