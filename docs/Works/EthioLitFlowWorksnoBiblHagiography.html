@@ -1,0 +1,593 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>Relations between keyword groups of Text Units assigned to one of the period of Ethiopian Literature</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"></link>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+        <script type="text/javascript"> google.charts.load('current', {'packages':['sankey']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'From');
+        data.addColumn('string', 'To');
+        data.addColumn('number', 'Weight');
+        data.addRows([["Aks/Hagiography (2)", "Paks1/Poetry-Hagiography (1)", 2.23606797749979],
+["Aks/Hagiography (2)", "Paks1/Miracle-Hagiography (1)", 2.23606797749979],
+["Aks/Hagiography (2)", "Paks1/Hagiography (9)", 9.055385138137417],
+["Aks/Hagiography (2)", "Paks1/Hagiography-ApocryphaPseudoepigrapha (28)", 28.071337695236398],
+["Aks/Hagiography-ApocryphaPseudoepigrapha (2)", "Paks1/Poetry-Hagiography (1)", 2.23606797749979],
+["Aks/Hagiography-ApocryphaPseudoepigrapha (2)", "Paks1/Miracle-Hagiography (1)", 2.23606797749979],
+["Aks/Hagiography-ApocryphaPseudoepigrapha (2)", "Paks1/Hagiography (9)", 9.055385138137417],
+["Aks/Hagiography-ApocryphaPseudoepigrapha (2)", "Paks1/Hagiography-ApocryphaPseudoepigrapha (28)", 28.071337695236398],
+["Paks1/Poetry-Hagiography (1)", "Paks2/Poetry-Hagiography (1)", 2.23606797749979],
+["Paks1/Poetry-Hagiography (1)", "Paks2/HistoryAndHistoriography-Hagiography-Chronicles (1)", 3.1622776601683795],
+["Paks1/Poetry-Hagiography (1)", "Paks2/Miracle-Hagiography (1)", 2.23606797749979],
+["Paks1/Poetry-Hagiography (1)", "Paks2/Hagiography (11)", 11.045361017187261],
+["Paks1/Miracle-Hagiography (1)", "Paks2/Poetry-Hagiography (1)", 2.23606797749979],
+["Paks1/Miracle-Hagiography (1)", "Paks2/HistoryAndHistoriography-Hagiography-Chronicles (1)", 3.1622776601683795],
+["Paks1/Miracle-Hagiography (1)", "Paks2/Miracle-Hagiography (1)", 2.23606797749979],
+["Paks1/Miracle-Hagiography (1)", "Paks2/Hagiography (11)", 11.045361017187261],
+["Paks1/Hagiography (9)", "Paks2/Poetry-Hagiography (1)", 2.23606797749979],
+["Paks1/Hagiography (9)", "Paks2/HistoryAndHistoriography-Hagiography-Chronicles (1)", 3.1622776601683795],
+["Paks1/Hagiography (9)", "Paks2/Miracle-Hagiography (1)", 2.23606797749979],
+["Paks1/Hagiography (9)", "Paks2/Hagiography (11)", 11.045361017187261],
+["Paks1/Hagiography-ApocryphaPseudoepigrapha (28)", "Paks2/Poetry-Hagiography (1)", 2.23606797749979],
+["Paks1/Hagiography-ApocryphaPseudoepigrapha (28)", "Paks2/HistoryAndHistoriography-Hagiography-Chronicles (1)", 3.1622776601683795],
+["Paks1/Hagiography-ApocryphaPseudoepigrapha (28)", "Paks2/Miracle-Hagiography (1)", 2.23606797749979],
+["Paks1/Hagiography-ApocryphaPseudoepigrapha (28)", "Paks2/Hagiography (11)", 11.045361017187261],
+["Paks2/Poetry-Hagiography (1)", "Gon/Poetry-Hagiography (1)", 2.23606797749979],
+["Paks2/Poetry-Hagiography (1)", "Gon/Hagiography (1)", 1.4142135623730951],
+["Paks2/HistoryAndHistoriography-Hagiography-Chronicles (1)", "Gon/Poetry-Hagiography (1)", 2.23606797749979],
+["Paks2/HistoryAndHistoriography-Hagiography-Chronicles (1)", "Gon/Hagiography (1)", 1.4142135623730951],
+["Paks2/Miracle-Hagiography (1)", "Gon/Poetry-Hagiography (1)", 2.23606797749979],
+["Paks2/Miracle-Hagiography (1)", "Gon/Hagiography (1)", 1.4142135623730951],
+["Paks2/Hagiography (11)", "Gon/Poetry-Hagiography (1)", 2.23606797749979],
+["Paks2/Hagiography (11)", "Gon/Hagiography (1)", 1.4142135623730951],
+["Gon/Poetry-Hagiography (1)", "ZaMa/Hagiography (3)", 5.0990195135927845],
+["Gon/Hagiography (1)", "ZaMa/Hagiography (3)", 5.0990195135927845],
+["ZaMa/Hagiography (3)", "MoPe/Hagiography (4)", 3.1622776601683795] ]);
+var colors = ['#a6cee3', '#b2df8a', '#fb9a99', '#fdbf6f','#cab2d6', '#ffff99', '#1f78b4', '#33a02c'];
+        // Sets chart options.
+        var options = {
+        height : 800,
+           sankey: {
+        node: {
+          colors: colors
+        },
+        link: {
+          colorMode: 'gradient',
+          colors: colors
+        }
+      }
+
+        };
+
+        // Instantiates and draws our chart, passing in some options.
+        var chart = new google.visualization.Sankey(document.getElementById('ethioLitFlow'));
+        chart.draw(data, options);
+      }
+</script>
+    </head>
+    <body>
+        <div class="col-md-12 alert alert-info">
+            <p class="lead">Selection of works with period keyword.</p>
+            <p class="lead">Limited to works with the keywords Hagiography.</p>
+        </div>
+        <div class="col-md-12">
+            <div class="col-md-2" style="max-height:600; overflow:auto">
+                <h2>Aks</h2>
+                <div>
+                    <h3>Aks/Hagiography (2)</h3>
+                    <table class="table table-responsive">
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>
+                                    <a href="http://betamasaheft.eu/LIT4834Jeremiah" target="_blank">Za-ʾErmǝyās nabiy</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>
+                                    <a href="http://betamasaheft.eu/LIT4857LifeofA" target="_blank">Zenāhu la-ʾabuna qǝddus ʾabbā ʾƎnṭonǝs</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div>
+                    <h3>Aks/Hagiography-ApocryphaPseudoepigrapha (2)</h3>
+                    <table class="table table-responsive">
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>
+                                    <a href="http://betamasaheft.eu/LIT4854Sleepers" target="_blank">Zenāhomu la-7daqiq za-kona samāʿt ba-wǝsta baʾat</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>
+                                    <a href="http://betamasaheft.eu/LIT4853Martyr" target="_blank">Gadl wa-sǝmʿ za-qǝddus Mārqos wangelāwi</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-md-2" style="max-height:600; overflow:auto">
+                <h2>Gon</h2>
+                <div>
+                    <h3>Gon/Hagiography (1)</h3>
+                    <table class="table table-responsive">
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>
+                                    <a href="http://betamasaheft.eu/LIT1431GadlaB" target="_blank">Gadla Buruk ʾAmlāk</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div>
+                    <h3>Gon/Poetry-Hagiography (1)</h3>
+                    <table class="table table-responsive">
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>
+                                    <a href="http://betamasaheft.eu/LIT1344enzira" target="_blank">ʿƎnzirā sǝbḥat</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-md-2" style="max-height:600; overflow:auto">
+                <h2>MoPe</h2>
+                <div>
+                    <h3>MoPe/Hagiography (4)</h3>
+                    <table class="table table-responsive">
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>
+                                    <a href="http://betamasaheft.eu/LIT1409GadlaA" target="_blank">Gadla ʾAbrǝhā waʾAṣbǝḥa</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>
+                                    <a href="http://betamasaheft.eu/LIT1474GadlaL" target="_blank">Gadla Liqānos</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>
+                                    <a href="http://betamasaheft.eu/LIT4726GadlaAlef" target="_blank">Gadla ʾAlef</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>
+                                    <a href="http://betamasaheft.eu/LIT2618ZenaLa" target="_blank">Zenā Lālibalā</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-md-2" style="max-height:600; overflow:auto">
+                <h2>Paks1</h2>
+                <div>
+                    <h3>Paks1/Hagiography (9)</h3>
+                    <table class="table table-responsive">
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>
+                                    <a href="http://betamasaheft.eu/LIT3165Menas" target="_blank">Gadl wa-sǝmʿ za-Minās</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>
+                                    <a href="http://betamasaheft.eu/LIT1446GadlaF" target="_blank">Gadla Filmonā</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>
+                                    <a href="http://betamasaheft.eu/LIT1891Martyr" target="_blank">Zenāhomu la-sabʾa Nāgrān wa-sǝmʿomu la-qǝddus Ḫirut wa-ʾǝlla mǝsle-hu</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>
+                                    <a href="http://betamasaheft.eu/LIT1470GadlaL" target="_blank">‘The 'Gadla Lālibalā' collection of texts: type A'</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td>
+                                    <a href="http://betamasaheft.eu/LIT1532GadlaP" target="_blank">Gadla Ṗanṭalewon za-ṣomaʿt</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>6</td>
+                                <td>
+                                    <a href="http://betamasaheft.eu/LIT1904Martyr" target="_blank">Gadl wa-sǝmʿ za-qǝddus Tewodros Banādlewos za-hagara ʾAnṣokiyā</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>7</td>
+                                <td>
+                                    <a href="http://betamasaheft.eu/LIT4827Martyr" target="_blank">Sǝmʿ za-makʷannǝn qǝddus Galāwdewos</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>8</td>
+                                <td>
+                                    <a href="http://betamasaheft.eu/LIT1413GadlaA" target="_blank">Gadla ʾAbsādi</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>9</td>
+                                <td>
+                                    <a href="http://betamasaheft.eu/LIT1445GadlaF" target="_blank">Gadla Filǝṗṗos za-Dabra Libānos</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div>
+                    <h3>Paks1/Hagiography-ApocryphaPseudoepigrapha (28)</h3>
+                    <table class="table table-responsive">
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>
+                                    <a href="http://betamasaheft.eu/LIT4837Martyr" target="_blank">Sǝmʿu la-Māryām gǝbṣāwit</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>
+                                    <a href="http://betamasaheft.eu/LIT4841Discourse" target="_blank">Dǝrsān fǝnāwe malʾǝkt za-qǝddus Dǝnāsyos baʾǝnta fǝṣṣāme sǝmʿomu la-Ṗeṭros wa-Ṗāwlos</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>
+                                    <a href="http://betamasaheft.eu/LIT3541Acts" target="_blank">Maṣḥafa gǝbru la-qǝddus Yāʿqob walda Zabǝdewos</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>
+                                    <a href="http://betamasaheft.eu/LIT3536Martyr" target="_blank">Sǝmʿu la-qǝddus Filǝṗṗos</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td>
+                                    <a href="http://betamasaheft.eu/LIT3540Preaching" target="_blank">Sǝbkatu la-qǝddus Mātiyās za-sabaka ba-wǝsta hagara balāʿta sabʾ</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>6</td>
+                                <td>
+                                    <a href="http://betamasaheft.eu/LIT3538Martyr" target="_blank">Sǝmʿu la-qǝddus ʾƎndrǝyās</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>7</td>
+                                <td>
+                                    <a href="http://betamasaheft.eu/LIT3535Martyr" target="_blank">Sǝmʿu la-qǝddus Luqās</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>8</td>
+                                <td>
+                                    <a href="http://betamasaheft.eu/LIT3537Acts" target="_blank">Sǝmʿomu la-ʾƎndrǝyās wa-la-Bartalomewos</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>9</td>
+                                <td>
+                                    <a href="http://betamasaheft.eu/LIT1883Martyr" target="_blank">Sǝmʿu la-Mārqos wangelāwi</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>10</td>
+                                <td>
+                                    <a href="http://betamasaheft.eu/LIT1680Martyr" target="_blank">Sǝmʿu la-qǝddus Yāʿqob Ṣādǝq</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>11</td>
+                                <td>
+                                    <a href="http://betamasaheft.eu/LIT1690ActsofJohn" target="_blank">Fǝnotu la-qǝddus Yoḥannǝs walda Zabǝdewos</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>12</td>
+                                <td>
+                                    <a href="http://betamasaheft.eu/LIT1427GadlaB" target="_blank">Sǝmʿu la-Bartalomewos</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>13</td>
+                                <td>
+                                    <a href="http://betamasaheft.eu/LIT1684Martyr" target="_blank">Sǝmʿ la-qǝddus Yāʿqob walda Zabǝdewos</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>14</td>
+                                <td>
+                                    <a href="http://betamasaheft.eu/LIT1014Actsof" target="_blank">Gǝbru la-Mātewos wangelāwi</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>15</td>
+                                <td>
+                                    <a href="http://betamasaheft.eu/LIT3539DeathJohn" target="_blank">Maṣḥafa ʿǝraftu la-qǝddus Yoḥannǝs walda Zabǝdewos</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>16</td>
+                                <td>
+                                    <a href="http://betamasaheft.eu/LIT2184Preach" target="_blank">Sǝbkatu la-qǝddus Yāʿqob Ṣādǝq</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>17</td>
+                                <td>
+                                    <a href="http://betamasaheft.eu/LIT2182Preach" target="_blank">Sǝbkatu la-qǝddus ʾƎndrǝyās</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>18</td>
+                                <td>
+                                    <a href="http://betamasaheft.eu/LIT2187Preach" target="_blank">Sǝbkatu la-qǝddus Filǝṗṗos</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>19</td>
+                                <td>
+                                    <a href="http://betamasaheft.eu/LIT2183Preach" target="_blank">Sǝbkatu la-qǝddus Bartalomewos</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>20</td>
+                                <td>
+                                    <a href="http://betamasaheft.eu/LIT3543Martyr" target="_blank">Sǝmʿu la-qǝddus Yāʿqob</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>21</td>
+                                <td>
+                                    <a href="http://betamasaheft.eu/LIT2186Preach" target="_blank">Sǝbkatu la-qǝddus Ṗeṭros</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>22</td>
+                                <td>
+                                    <a href="http://betamasaheft.eu/LIT2185Preach" target="_blank">Sǝbkatu la-Yǝhudā ʾǝḫu-hu la-ʾƎgziʾǝna Tādewos</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>23</td>
+                                <td>
+                                    <a href="http://betamasaheft.eu/LIT2188Preach" target="_blank">Sǝbkatu la-qǝddus Sǝmʿon walda Qalayoṗā za-tasammǝya Yǝhudā Nātnāʾel</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>24</td>
+                                <td>
+                                    <a href="http://betamasaheft.eu/LIT1889Martyr" target="_blank">Sǝmʿu la-qǝddus Ṗeṭros</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>25</td>
+                                <td>
+                                    <a href="http://betamasaheft.eu/LIT3533Martyr" target="_blank">Sǝmʿu la-qǝddus Sǝmʿon walda Qalayoṗā</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>26</td>
+                                <td>
+                                    <a href="http://betamasaheft.eu/LIT1887Martyr" target="_blank">Sǝmʿu la-Mātiyās</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>27</td>
+                                <td>
+                                    <a href="http://betamasaheft.eu/LIT1015Actsof" target="_blank">Za-gabra ʾƎndrǝyās</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>28</td>
+                                <td>
+                                    <a href="http://betamasaheft.eu/LIT1886Martyr" target="_blank">Sǝmʿu la-Mātewos wangelāwi</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div>
+                    <h3>Paks1/Miracle-Hagiography (1)</h3>
+                    <table class="table table-responsive">
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>
+                                    <a href="http://betamasaheft.eu/LIT4006Taamme" target="_blank">Taʾammǝra Giyorgis</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div>
+                    <h3>Paks1/Poetry-Hagiography (1)</h3>
+                    <table class="table table-responsive">
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>
+                                    <a href="http://betamasaheft.eu/LIT1146Argano" target="_blank">ʾArgānona Māryām</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-md-2" style="max-height:600; overflow:auto">
+                <h2>Paks2</h2>
+                <div>
+                    <h3>Paks2/Hagiography (11)</h3>
+                    <table class="table table-responsive">
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>
+                                    <a href="http://betamasaheft.eu/LIT1469GadlaK" target="_blank">Gadla Krǝstos Śamrā</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>
+                                    <a href="http://betamasaheft.eu/LIT1481GadlaM" target="_blank">Gadla Masqal Kǝbrā</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>
+                                    <a href="http://betamasaheft.eu/LIT1496GadlaS" target="_blank">Gadla Sāmuʾel za-Dabra Wagag</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>
+                                    <a href="http://betamasaheft.eu/LIT1465GadlaI" target="_blank">Gadla ʾIsāyǝyyās za-Gunda Gunde</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td>
+                                    <a href="http://betamasaheft.eu/LIT1430GadlaB" target="_blank">Gadla Bǝḍuʿa ʾAmlāk</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>6</td>
+                                <td>
+                                    <a href="http://betamasaheft.eu/LIT1405GadlaA" target="_blank">Gadla ʾAbakarazun</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>7</td>
+                                <td>
+                                    <a href="http://betamasaheft.eu/LIT1466GadlaI" target="_blank">Gadla ʾIyāsu za-Ǧar Śǝllāse</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>8</td>
+                                <td>
+                                    <a href="http://betamasaheft.eu/LIT1459GadlaH" target="_blank">Gadla Habta Māryām</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>9</td>
+                                <td>
+                                    <a href="http://betamasaheft.eu/LIT4787Pawlos" target="_blank">Zenā Ṗāwlos</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>10</td>
+                                <td>
+                                    <a href="http://betamasaheft.eu/LIT1467GadlaI" target="_blank">Gadla ʾIyasus Moʾa</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>11</td>
+                                <td>
+                                    <a href="http://betamasaheft.eu/LIT1482GadlaM" target="_blank">Gadla Mātyās za-ʿAddǝqe</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div>
+                    <h3>Paks2/HistoryAndHistoriography-Hagiography-Chronicles (1)</h3>
+                    <table class="table table-responsive">
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>
+                                    <a href="http://betamasaheft.eu/LIT4648ChronEsk" target="_blank">Chronicle of ʾƎskǝndǝr</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div>
+                    <h3>Paks2/Miracle-Hagiography (1)</h3>
+                    <table class="table table-responsive">
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>
+                                    <a href="http://betamasaheft.eu/LIT4006Taamme" target="_blank">Taʾammǝra Giyorgis</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div>
+                    <h3>Paks2/Poetry-Hagiography (1)</h3>
+                    <table class="table table-responsive">
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>
+                                    <a href="http://betamasaheft.eu/LIT1344enzira" target="_blank">ʿƎnzirā sǝbḥat</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-md-2" style="max-height:600; overflow:auto">
+                <h2>ZaMa</h2>
+                <div>
+                    <h3>ZaMa/Hagiography (3)</h3>
+                    <table class="table table-responsive">
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>
+                                    <a href="http://betamasaheft.eu/LIT1409GadlaA" target="_blank">Gadla ʾAbrǝhā waʾAṣbǝḥa</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>
+                                    <a href="http://betamasaheft.eu/LIT1408GadlaA" target="_blank">Gadla ʾAbrānyos</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>
+                                    <a href="http://betamasaheft.eu/LIT1417GadlaA" target="_blank">Gadla ʾAfṣe</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12" id="ethioLitFlow"/>
+    </body>
+</html>

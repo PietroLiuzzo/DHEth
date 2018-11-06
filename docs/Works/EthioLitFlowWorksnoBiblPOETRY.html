@@ -1,0 +1,120 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>Relations between keyword groups of Text Units assigned to one of the period of Ethiopian Literature</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"></link>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+        <script type="text/javascript"> google.charts.load('current', {'packages':['sankey']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'From');
+        data.addColumn('string', 'To');
+        data.addColumn('number', 'Weight');
+        data.addRows([["Paks1/Poetry-Hagiography (1)", "Paks2/Poetry-Hagiography (1)", 1.4142135623730951],
+["Paks1/Poetry-Hagiography (1)", "Paks2/Poetry-HistoryAndHistoriography (1)", 1.4142135623730951],
+["Paks2/Poetry-Hagiography (1)", "Gon/Poetry-Hagiography (1)", 1.4142135623730951],
+["Paks2/Poetry-HistoryAndHistoriography (1)", "Gon/Poetry-Hagiography (1)", 1.4142135623730951] ]);
+var colors = ['#a6cee3', '#b2df8a', '#fb9a99', '#fdbf6f','#cab2d6', '#ffff99', '#1f78b4', '#33a02c'];
+        // Sets chart options.
+        var options = {
+        height : 800,
+           sankey: {
+        node: {
+          colors: colors
+        },
+        link: {
+          colorMode: 'gradient',
+          colors: colors
+        }
+      }
+
+        };
+
+        // Instantiates and draws our chart, passing in some options.
+        var chart = new google.visualization.Sankey(document.getElementById('ethioLitFlow'));
+        chart.draw(data, options);
+      }
+</script>
+    </head>
+    <body>
+        <div class="col-md-12 alert alert-info">
+            <p class="lead">Selection of works with period keyword.</p>
+            <p class="lead">Limited to works with the keywords Poetry.</p>
+        </div>
+        <div class="col-md-12">
+            <div class="col-md-2" style="max-height:600; overflow:auto">
+                <h2>Aks</h2>
+            </div>
+            <div class="col-md-2" style="max-height:600; overflow:auto">
+                <h2>Gon</h2>
+                <div>
+                    <h3>Gon/Poetry-Hagiography (1)</h3>
+                    <table class="table table-responsive">
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>
+                                    <a href="http://betamasaheft.eu/LIT1344enzira" target="_blank">ʿƎnzirā sǝbḥat</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-md-2" style="max-height:600; overflow:auto">
+                <h2>MoPe</h2>
+            </div>
+            <div class="col-md-2" style="max-height:600; overflow:auto">
+                <h2>Paks1</h2>
+                <div>
+                    <h3>Paks1/Poetry-Hagiography (1)</h3>
+                    <table class="table table-responsive">
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>
+                                    <a href="http://betamasaheft.eu/LIT1146Argano" target="_blank">ʾArgānona Māryām</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-md-2" style="max-height:600; overflow:auto">
+                <h2>Paks2</h2>
+                <div>
+                    <h3>Paks2/Poetry-Hagiography (1)</h3>
+                    <table class="table table-responsive">
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>
+                                    <a href="http://betamasaheft.eu/LIT1344enzira" target="_blank">ʿƎnzirā sǝbḥat</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div>
+                    <h3>Paks2/Poetry-HistoryAndHistoriography (1)</h3>
+                    <table class="table table-responsive">
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>
+                                    <a href="http://betamasaheft.eu/LIT4650RoyalSongs" target="_blank">Amharic Royal Songs (generic record)</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-md-2" style="max-height:600; overflow:auto">
+                <h2>ZaMa</h2>
+            </div>
+        </div>
+        <div class="col-md-12" id="ethioLitFlow"/>
+    </body>
+</html>
