@@ -1,0 +1,85 @@
+subjectLabel, subjectID, subjectLanguage, subjectPeriod, relation, objectLabel, objectID, objectLanguage, objectPeriod
+Maṣḥafa qandil, LIT3953MashafaQ, gez, Paks2, saws:isVersionInAnotherLanguageOf, Qandīl, LIT3953MashafaQ#t2Arabic, ar, Paks2
+Qandīl, LIT3953MashafaQ#t2Arabic, ar, Paks2, saws:isVersionInAnotherLanguageOf, Not available, LIT3953MashafaQ#t3Greek, grc, Paks2
+Maṣḥafa ʾardǝʾǝt, LIT3944ArdeetChL, gez, Not available, saws:isVersionOf, Maṣḥafa ʾardǝʾǝt, LIT3942ArdeetCh, gez
+Maṣḥafa krǝstǝnnā, LIT3948MashafaKrS, gez, Not available, saws:isVersionInAnotherLanguageOf, Coptic baptismal rite, LIT1940Mashaf#t1coptic, cop
+Maṣḥafa saʿātāt, LIT3575Mashaf, gez, Not available, saws:isVersionOf, Maṣḥafa saʿātāt (general record), LIT1961Mashaf, gez
+Bārtos, LIT1201Bartos, gez, Not available, saws:isVersionInAnotherLanguageOf, No item: t4Arabic, t4Arabic, gez
+Not available, LIT1399Filkes#t6arabic, ar, Not available, saws:isVersionInAnotherLanguageOf, Not available, LIT1399Filkes#t5syriac, syr
+Filkǝsyos, LIT1399Filkes#t1, gez, Not available, saws:isVersionInAnotherLanguageOf, Not available, LIT1399Filkes#t6arabic, ar
+Maṣḥafa Mār Yǝṣhāq, LIT1948Mashaf#t1, gez, Not available, saws:isVersionInAnotherLanguageOf, Not available, LIT1948Mashaf#t3arabic, gez
+Gadla ḥawāryāt (general record), LIT1461Gadlah#t1, gez, Not available, saws:isVersionInAnotherLanguageOf, Arabic version, LIT1461Gadlah#t2arabic, ar
+Gadla Marqoryos, LIT1899Martyr#t1, gez, Not available, saws:isVersionInAnotherLanguageOf, Arabic Vita of Mercurios, LIT1899Martyr#t3arabic, ar
+Dǝrsāna Śǝllāse, LIT1300Dersan, gez, Not available, saws:isVersionOf, Zena nägäromu läśǝllase, LIT2623Zenana, gez
+Dǝrsāna Śǝllāse, LIT1300Dersan, gez, Not available, saws:isVersionOf, Mäṣḥafä śǝllase, LIT1966Mashaf, gez
+Baralām wa-Yǝwāsǝf, LIT1199Barala#t1, gez, Not available, saws:isVersionInAnotherLanguageOf, Not available, LIT1199Barala#t7arabic, ar
+Bilawhar wa-Būdāsaf, LIT1199Barala#t4arabic, ar, Not available, saws:isVersionInAnotherLanguageOf, Not available, LIT1199Barala#t3pahlavi, pal
+Not available, LIT1199Barala#t5georgian, geo, Not available, saws:isVersionInAnotherLanguageOf, Bilawhar wa-Būdāsaf, LIT1199Barala#t4arabic, ar
+Not available, LIT1199Barala#t6greek, grc, Not available, saws:isVersionInAnotherLanguageOf, Not available, LIT1199Barala#t5georgian, geo
+Not available, LIT1199Barala#t7arabic, ar, Not available, saws:isVersionInAnotherLanguageOf, Not available, LIT1199Barala#t6greek, grc
+Maṣḥafa ʾardǝʾǝt, LIT3942ArdeetCh, gez, Not available, saws:isVersionOf, Maṣḥafa ʾardǝʾǝt, LIT1915Mashaf, gez
+Maṣḥafa ʾardǝʾǝt, LIT3945ArdeetBE, gez, Not available, saws:isVersionOf, Maṣḥafa ʾardǝʾǝt, LIT1915Mashaf, gez
+Maṣḥafa krǝstǝnnā, LIT3979MashafaKrC, gez, Not available, saws:isVersionOf, Maṣḥafa krǝstǝnnā (Generic record), LIT1940Mashaf, gez
+Maṣḥafa qandil, LIT3952MashafaQ, gez, Paks2, saws:isVersionInAnotherLanguageOf, Qandīl, LIT3952MashafaQ#t2Arabic, ar, Paks2
+Qandīl, LIT3952MashafaQ#t2Arabic, ar, Paks2, saws:isVersionInAnotherLanguageOf, Not available, LIT3952MashafaQ#t3Greek, grc, Paks2
+Maṣḥafa saʿātāt, LIT3575Mashaf, gez, Not available, saws:isVersionOf, Maṣḥafa saʿātāt (general record), LIT1961Mashaf, gez
+ʾAragāwi manfasāwi, LIT3989Aragawi#t1, gez, Paks2, saws:isVersionInAnotherLanguageOf, Compendium of aš-Šayḫ al-Rūḥānī, LIT3989Aragawi#t2arabic, ar, Paks2
+Compendium of aš-Šayḫ al-Rūḥānī, LIT3989Aragawi#t2arabic, ar, Paks2, saws:isVersionInAnotherLanguageOf, Compendium of Yoḥannān Sabhā, LIT3989Aragawi#t3syriac, syr, Paks2
+Not available, LIT3171Commen#t2arabic, ar, Paks2, saws:isVersionInAnotherLanguageOf, CPG 4440, LIT3171Commen#t2greek, grc, Paks2
+Tǝrgʷāme malʾǝkt za-bǝṣuʿ wa-kǝbur Ṗāwlos za-ṣaḥafa la-ʿƎbrāwǝyān, LIT3171Commen#t1, gez, Paks2, saws:isVersionInAnotherLanguageOf, Not available, LIT3171Commen#t2arabic, ar, Paks2
+Not available, LIT3171Commen#t3amharic, am, Paks2, saws:isVersionInAnotherLanguageOf, Tǝrgʷāme malʾǝkt za-bǝṣuʿ wa-kǝbur Ṗāwlos za-ṣaḥafa la-ʿƎbrāwǝyān, LIT3171Commen#t1, gez, Paks2
+Maṣḥafa ʾardǝʾǝt, LIT3943ArdeetChS, gez, Not available, saws:isVersionOf, Maṣḥafa ʾardǝʾǝt, LIT3942ArdeetCh, gez
+Gize ṣalot, LIT3577GizeS, gez, Not available, saws:isVersionOf, Maṣḥafa saʿātāt (general record), LIT1961Mashaf, gez
+Legend of Abgar (Older Version), LIT5025Abgar, gez, Not available, saws:isVersionOf, Legend of Abgar (general record), LIT1759Legend, gez
+Legend of Abgar (Longer Version), LIT5027AbgarLonger, gez, Not available, saws:isVersionOf, Legend of Abgar (general record), LIT1759Legend, gez
+Maṣḥafa ṭomār, LIT1978Mashaf#t1, gez, Not available, saws:isVersionInAnotherLanguageOf, Not available, LIT1978Mashaf#t4arabic, ar
+Not available, LIT1978Mashaf#t4arabic, ar, Not available, saws:isVersionInAnotherLanguageOf, Not available, LIT1978Mashaf#t7syriac, syr
+Maṣḥafa qedar, LIT1959Mashaf#t1, gez, Not available, saws:isVersionInAnotherLanguageOf, Qidra, LIT1959Mashaf#t2Arabic, ar
+Kǝbra nagaśt, LIT1709Kebran#t1, gez, Not available, saws:isVersionInAnotherLanguageOf, Šarḥ sabab intiqāl mamlakat Sulaymān malik ʾIsrāʾīl ʾilā bilād an-naǧāšīya allatī hiya al-ḥabaša, LIT1709Kebran#t2arabic, ar
+Maṣḥafa falāsfā ṭabibān (general record), LIT1925Mashaf#t1, gez, Paks2, saws:isVersionInAnotherLanguageOf, Kitāb al-bustān wa-qāʿidat al-ḥukamāʾ wa-šams al-ʾādāb, LIT1925Mashaf#t2arabic, at, Paks2
+Greek Version of Enoch, LIT1340EnochE#t5greek, Not available, Not available, saws:isVersionInAnotherLanguageOf, Aramaic Version of Enoch, LIT1340EnochE#t4aramaic, Not available
+Maṣḥafa Henok, LIT1340EnochE#t1, gez, Not available, saws:isVersionInAnotherLanguageOf, Greek Version of Enoch, LIT1340EnochE#t5greek, Not available
+Dǝrsāna Māryām, LIT1293Dersan#t1, gez, Not available, saws:isVersionInAnotherLanguageOf, Not available, LIT1293Dersan#t4arabic, ar
+Maṣḥafa qandil, LIT1958Mashaf#t1, gez, Not available, saws:isVersionInAnotherLanguageOf, Qandīl, LIT1958Mashaf#t2arabic, ar
+Qandīl, LIT1958Mashaf#t2arabic, ar, Not available, saws:isVersionInAnotherLanguageOf, Not available, LIT1958Mashaf#t3greek, grc
+Arabic Vision of Paul, LIT1124Apocal#t4arabic, ar, Not available, saws:isVersionInAnotherLanguageOf, CANT 325, LIT1124Apocal#t3greek, grc
+Rāʾǝya [ʾǝgzǝʾǝtǝna] Māryām, LIT1124Apocal#t1, gez, Not available, saws:isVersionInAnotherLanguageOf, Arabic Vision of Paul, LIT1124Apocal#t4arabic, ar
+Amharic Vision of Mary, LIT1124Apocal#t5amharic, am, Not available, saws:isVersionInAnotherLanguageOf, Rāʾǝya [ʾǝgzǝʾǝtǝna] Māryām, LIT1124Apocal#t1, gez
+ʾAksimāros, LIT1046Aksima#t1, gez, Not available, saws:isVersionInAnotherLanguageOf, ʾAksīmāris, LIT1046Aksima#t2arabic, ar
+Hāymānota ʾabaw, LIT1586Hayman#t1, gez, Not available, saws:isVersionInAnotherLanguageOf, Iʿtirāf al-ʾābāʾ, LIT1586Hayman#t2arabic, ar
+Arabic Questions to Antiochus, LIT1914Mashaf#t4arabic, ar, Not available, saws:isVersionInAnotherLanguageOf, CPG 2257, LIT1914Mashaf#t3greek, grc
+Maṣḥafa ʾAntǝyākos, LIT1914Mashaf#t1, gez, Not available, saws:isVersionInAnotherLanguageOf, Arabic Questions to Antiochus, LIT1914Mashaf#t4arabic, ar
+Dǝrsān baʾǝnta ʾǝlla nomu kāhǝnāt wa-diyāqonāt, LIT1629Homily#t1, gez, Not available, saws:isVersionInAnotherLanguageOf, Consolation for priests, LIT1629Homily#t2syriac, syr
+Greek Book of Jubilees, LIT1697Jubilees#t3greek, grc, Not available, saws:isVersionInAnotherLanguageOf, Hebrew Book of Jubilees, LIT1697Jubilees#t2hebrew, he
+Maṣḥafa kufāle, LIT1697Jubilees#t1, gez, Not available, saws:isVersionInAnotherLanguageOf, Greek Book of Jubilees, LIT1697Jubilees#t3greek, grc
+Latin Book of Jubilees, LIT1697Jubilees#t4latin, la, Not available, saws:isVersionInAnotherLanguageOf, Greek Book of Jubilees, LIT1697Jubilees#t3greek, grc
+ʾAnkariṭos, LIT1107Ankari#t1, gez, Not available, saws:isVersionInAnotherLanguageOf, Not available, LIT1107Ankari#t4greek, grc
+Maṣḥafa ḥāwi, LIT1933Mashaf#t1, gez, Paks2, saws:isVersionInAnotherLanguageOf, Kitāb al-ḥāwi, LIT1933Mashaf#t2arabic, ar, Paks2
+Kitāb al-ḥāwi, LIT1933Mashaf#t2arabic, ar, Paks2, saws:isVersionInAnotherLanguageOf, Πανδέκται τῶν ἑρμηνείον τῶν θείον ἐντολῶν τοῦ Κυρίου, LIT1933Mashaf#t3greek, grc, Paks2
+Physiologus, LIT1401Physio#t1, gez, Aks, saws:isVersionInAnotherLanguageOf, Ὁ φυσιολόγος, LIT1401Physio#t3greek, grc, Aks
+Ṭǝbaba Sābelā, LIT2353SibylW#t1, gez, Not available, saws:isVersionInAnotherLanguageOf, Arabic Wisdom of Sibyl, LIT2353SibylW#t2arabic, ar
+	سيرة سكندس الحكيم وحكمته ومسائله على تمامها وكمالها, LIT2625ZenaSe#t3arabic, ar, Paks1, saws:isVersionInAnotherLanguageOf, Greek Secundus, LIT2625ZenaSe#t2greek, grc, Paks1
+The story of Secundus King Hadrian's sage and of his teachings his wisdom and his dialogue, LIT2625ZenaSe#t1, gez, Paks1, saws:isVersionInAnotherLanguageOf, Not available, LIT2625ZenaSe#t3arabic LIT2625ZenaSe#t4syr, ar, Paks1
+Gadla ʾEwosṭātewos, LIT4321GadlaEC, gez, Not available, saws:isVersionOf, Gadla ʾEwosṭātewos, LIT1438GadlaE, gez
+Hāymānotu la-qǝddus ʿābiyy māri Yāʿqob ʾƎlbarādʿi, LIT4010Haymanotu#t1, gez, Paks1 Paks2, saws:isVersionInAnotherLanguageOf, Arabic Creed of Jacob Baradaeus, LIT4010Haymanotu#t2arabic, ar, Paks1 Paks2
+Dǝrsān za-bǝṣuʿ Fisālgos, LIT4915PhysA, gez, Not available, saws:isVersionOf, Physiologus (general record), LIT1401Physio, gez, Aks
+Gadla ʾEwosṭātewos, LIT4319GadlaEA, gez, Not available, saws:isVersionOf, Gadla ʾEwosṭātewos, LIT1438GadlaE, gez
+ታሪከ፡ ወልደ፡ ዐሚድ፡, LIT4723TarikaWaldaAmid#t1, gez, Paks2, saws:isVersionInAnotherLanguageOf, المجمع المبارك, LIT4723TarikaWaldaAmid#t2, ar, Paks2
+Gadla ʾEwosṭātewos, LIT4320GadlaEB, gez, Not available, saws:isVersionOf, Gadla ʾEwosṭātewos, LIT1438GadlaE, gez
+Maṣḥafa faws manfasāwi                (Anonymous), LIT4018Mashafa#t1, gez, Paks1 Paks2, saws:isVersionOf, Arabic Vorlage, LIT4018Mashafa#t2arabic, ar, Paks1 Paks2
+Maṣḥafa faws manfasāwi                (Anonymous) no id Introduction3, LIT4018Mashafa#Introduction3, gez, Paks1 Paks2, saws:isVersionInAnotherLanguageOf, faṣl fī-mā yaǧibu ʿalā                         ṭ-ṭabīb maʿrifatihī ʾaʿnī muʿallim al-iʿtirāf, LIT4018Mashafa#t3arabic, ar, Paks1 Paks2
+Abyssinische Chronik, LIT4090Haylu#t2, de, ZaMa, saws:isVersionInAnotherLanguageOf, Ḫāylu Compilation (general record), LIT4090Haylu#t1, Not available, ZaMa
+Short Chronicles (Qʷaraṭā Recension), LIT4833ShortChroniclesQor, gez, Not available, saws:isVersionOf, Short Chronicles, LIT2352ShortC, gez
+Pseudo-trilingual royal inscriptions RIÉ                     270, LIT4851greekRoyal, gez, Not available, saws:isVersionInAnotherLanguageOf, Pseudo-trilingual royal inscriptions RIÉ 185, LIT4850pseudotrilingual, gez
+Dǝrsān za-bǝṣuʿ Fisālgos, LIT4915PhysA, gez, Not available, saws:isVersionOf, Physiologus (general record), LIT1401Physio, gez, Aks
+Maṣḥafa faws manfasāwi (by Michael of ʾAṯrīb), LIT4017Mashafa#t1, gez, Paks1 Paks2, saws:isVersionInAnotherLanguageOf, Kitāb aṭ-ṭibb ar-rūḥānī, LIT4017Mashafa#t2arabic, ar, Paks1 Paks2
+Zenā ṭǝbab za-Fisǝʾalgos ṭabib, LIT4917PhysC, gez, Not available, saws:isVersionOf, Physiologus (general record), LIT1401Physio, gez, Aks
+Zenā mǝssāleyāt za-ṭabib Fisǝʾalgos, LIT4916PhysB, gez, Not available, saws:isVersionOf, Physiologus (general record), LIT1401Physio, gez, Aks
+Pseudo-trilingual royal inscriptions RIÉ 185, LIT4850pseudotrilingual, gez, Not available, saws:isVersionInAnotherLanguageOf, Pseudo-trilingual royal inscriptions RIÉ                     270, LIT4851greekRoyal, gez
+Saʿātāt za-maʿālt, LIT2231Saatat, gez, Not available, saws:isVersionOf, Maṣḥafa saʿātāt (general record), LIT1961Mashaf, gez
+Zenā ʾƎskǝndǝr, LIT2616Zenaes#t1, gez, Not available, saws:isVersionInAnotherLanguageOf, Arabic Romance of Alexander, LIT2616Zenaes#t4arabic, ar
+Saʿātāt za-gǝbṣ, LIT2230Saatat, gez, Not available, saws:isVersionOf, Maṣḥafa saʿātāt (general record), LIT1961Mashaf, gez
+Saʿātāt za-gǝbṣ, LIT2230Saatat, gez, Not available, saws:isVersionInAnotherLanguageOf, No item: LIT3570Agbiya, LIT3570Agbiya, gez
+Taʾamra Śǝllāse, LIT2282Trinity, gez, Not available, saws:isVersionOf, Taʾammǝra Śǝllāse, LIT2388Taamme, gez
+Zenā nagaromu la-Śǝllāse, LIT2286ZenaSellase, gez, Not available, saws:isVersionOf, Taʾammǝra Śǝllāse, LIT2388Taamme, gez
+Zenā nagaromu la-Śǝllāse, LIT2286ZenaSellase, gez, Not available, saws:isVersionOf, Taʾammǝra Śǝllāse, LIT2388Taamme, gez

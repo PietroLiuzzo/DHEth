@@ -1,0 +1,1857 @@
+<html>
+
+<head>
+  <title>Network of translations</title>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.12.0/vis.min.js"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis-network.min.css" rel="stylesheet" type="text/css"></link>
+
+  <style type="text/css">
+    #mynetwork {
+      height: 400px;
+      border: 1px solid lightgray;
+    }
+    p {
+      max-width:600px;
+    }
+  </style>
+
+</head>
+
+<body>
+
+
+<p>
+Click any of the buttons below to cluster the network. On every push the network will be reinitialized first. You can click on a cluster to open it.
+</p>
+
+<input type="button" onclick="clusterByCid()" value="Cluster all nodes with CID = 1"> <br>
+<input type="button" onclick="clusterByColor()" value="Cluster by color"> <br>
+<input type="button" onclick="clusterByConnection()" value="Cluster 'node 1' by connections"> <br>
+<input type="button" onclick="clusterOutliers()" value="Cluster outliers"> <br>
+<input type="button" onclick="clusterByHubsize()" value="Cluster by hubsize"> <br>
+
+<div id="mynetwork"><div class="vis-network" tabindex="900" style="position: relative; overflow: hidden; touch-action: pan-y; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); width: 100%; height: 100%;"><canvas style="position: relative; touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); width: 100%; height: 100%;" width="600" height="600"></canvas></div></div>
+
+<script type="text/javascript">
+  // create an array with nodes
+  var nodes = [ {
+    "color" : "blue",
+    "label" : "Maṣḥafa qandil",
+    "id" : "LIT3953MashafaQ"
+  }, {
+    "color" : "blue",
+    "label" : "Qandīl",
+    "id" : "LIT3953MashafaQ#t2Arabic"
+  }, {
+    "color" : "blue",
+    "label" : null,
+    "id" : "LIT1399Filkes#t6arabic"
+  }, {
+    "color" : "blue",
+    "label" : "Filkǝsyos",
+    "id" : "LIT1399Filkes#t1"
+  }, {
+    "color" : "blue",
+    "label" : "Gadla ḥawāryāt (general record)",
+    "id" : "LIT1461Gadlah#t1"
+  }, {
+    "color" : "blue",
+    "label" : "Gadla Marqoryos",
+    "id" : "LIT1899Martyr#t1"
+  }, {
+    "color" : "blue",
+    "label" : "Baralām wa-Yǝwāsǝf",
+    "id" : "LIT1199Barala#t1"
+  }, {
+    "color" : "blue",
+    "label" : "Bilawhar wa-Būdāsaf",
+    "id" : "LIT1199Barala#t4arabic"
+  }, {
+    "color" : "blue",
+    "label" : null,
+    "id" : "LIT1199Barala#t5georgian"
+  }, {
+    "color" : "blue",
+    "label" : null,
+    "id" : "LIT1199Barala#t7arabic"
+  }, {
+    "color" : "blue",
+    "label" : "Maṣḥafa qandil",
+    "id" : "LIT3952MashafaQ"
+  }, {
+    "color" : "blue",
+    "label" : "Qandīl",
+    "id" : "LIT3952MashafaQ#t2Arabic"
+  }, {
+    "color" : "blue",
+    "label" : "ʾAragāwi manfasāwi",
+    "id" : "LIT3989Aragawi#t1"
+  }, {
+    "color" : "blue",
+    "label" : "Compendium of aš-Šayḫ al-Rūḥānī",
+    "id" : "LIT3989Aragawi#t2arabic"
+  }, {
+    "color" : "blue",
+    "label" : null,
+    "id" : "LIT3171Commen#t2arabic"
+  }, {
+    "color" : "blue",
+    "label" : "Tǝrgʷāme malʾǝkt za-bǝṣuʿ wa-kǝbur Ṗāwlos za-ṣaḥafa la-ʿƎbrāwǝyān",
+    "id" : "LIT3171Commen#t1"
+  }, {
+    "color" : "blue",
+    "label" : "Maṣḥafa ṭomār",
+    "id" : "LIT1978Mashaf#t1"
+  }, {
+    "color" : "blue",
+    "label" : null,
+    "id" : "LIT1978Mashaf#t4arabic"
+  }, {
+    "color" : "blue",
+    "label" : "Maṣḥafa qedar",
+    "id" : "LIT1959Mashaf#t1"
+  }, {
+    "color" : "blue",
+    "label" : "Kǝbra nagaśt",
+    "id" : "LIT1709Kebran#t1"
+  }, {
+    "color" : "blue",
+    "label" : "Dǝrsāna Māryām",
+    "id" : "LIT1293Dersan#t1"
+  }, {
+    "color" : "blue",
+    "label" : "Maṣḥafa qandil",
+    "id" : "LIT1958Mashaf#t1"
+  }, {
+    "color" : "blue",
+    "label" : "Qandīl",
+    "id" : "LIT1958Mashaf#t2arabic"
+  }, {
+    "color" : "blue",
+    "label" : "Arabic Vision of Paul",
+    "id" : "LIT1124Apocal#t4arabic"
+  }, {
+    "color" : "blue",
+    "label" : "Rāʾǝya [ʾǝgzǝʾǝtǝna] Māryām",
+    "id" : "LIT1124Apocal#t1"
+  }, {
+    "color" : "blue",
+    "label" : "ʾAksimāros",
+    "id" : "LIT1046Aksima#t1"
+  }, {
+    "color" : "blue",
+    "label" : "Hāymānota ʾabaw",
+    "id" : "LIT1586Hayman#t1"
+  }, {
+    "color" : "blue",
+    "label" : "Arabic Questions to Antiochus",
+    "id" : "LIT1914Mashaf#t4arabic"
+  }, {
+    "color" : "blue",
+    "label" : "Maṣḥafa ʾAntǝyākos",
+    "id" : "LIT1914Mashaf#t1"
+  }, {
+    "color" : "blue",
+    "label" : "Maṣḥafa ḥāwi",
+    "id" : "LIT1933Mashaf#t1"
+  }, {
+    "color" : "blue",
+    "label" : "Kitāb al-ḥāwi",
+    "id" : "LIT1933Mashaf#t2arabic"
+  }, {
+    "color" : "blue",
+    "label" : "Ṭǝbaba Sābelā",
+    "id" : "LIT2353SibylW#t1"
+  }, {
+    "color" : "blue",
+    "label" : "\tسيرة سكندس الحكيم وحكمته ومسائله على تمامها وكمالها",
+    "id" : "LIT2625ZenaSe#t3arabic"
+  }, {
+    "color" : "blue",
+    "label" : "The story of Secundus, King Hadrian's sage and of his teachings, his wisdom and his dialogue",
+    "id" : "LIT2625ZenaSe#t1"
+  }, {
+    "color" : "blue",
+    "label" : "Hāymānotu la-qǝddus ʿābiyy māri Yāʿqob ʾƎlbarādʿi",
+    "id" : "LIT4010Haymanotu#t1"
+  }, {
+    "color" : "blue",
+    "label" : "ታሪከ፡ ወልደ፡ ዐሚድ፡",
+    "id" : "LIT4723TarikaWaldaAmid#t1"
+  }, {
+    "color" : "blue",
+    "label" : "Maṣḥafa faws manfasāwi\n               (Anonymous)",
+    "id" : "LIT4018Mashafa#t1"
+  }, {
+    "color" : "blue",
+    "label" : "Maṣḥafa faws manfasāwi\n               (Anonymous), no id Introduction3",
+    "id" : "LIT4018Mashafa#Introduction3"
+  }, {
+    "color" : "blue",
+    "label" : "Maṣḥafa faws manfasāwi (by Michael of ʾAṯrīb)",
+    "id" : "LIT4017Mashafa#t1"
+  }, {
+    "color" : "blue",
+    "label" : "Zenā ʾƎskǝndǝr",
+    "id" : "LIT2616Zenaes#t1"
+  }, {
+    "color" : "blue",
+    "label" : null,
+    "id" : "LIT3953MashafaQ#t3Greek"
+  }, {
+    "color" : "blue",
+    "label" : null,
+    "id" : "LIT1399Filkes#t5syriac"
+  }, {
+    "color" : "blue",
+    "label" : "Arabic version",
+    "id" : "LIT1461Gadlah#t2arabic"
+  }, {
+    "color" : "blue",
+    "label" : "Arabic Vita of Mercurios",
+    "id" : "LIT1899Martyr#t3arabic"
+  }, {
+    "color" : "blue",
+    "label" : null,
+    "id" : "LIT1199Barala#t3pahlavi"
+  }, {
+    "color" : "blue",
+    "label" : null,
+    "id" : "LIT1199Barala#t6greek"
+  }, {
+    "color" : "blue",
+    "label" : null,
+    "id" : "LIT3952MashafaQ#t3Greek"
+  }, {
+    "color" : "blue",
+    "label" : "Compendium of Yoḥannān Sabhā",
+    "id" : "LIT3989Aragawi#t3syriac"
+  }, {
+    "color" : "blue",
+    "label" : "CPG 4440",
+    "id" : "LIT3171Commen#t2greek"
+  }, {
+    "color" : "blue",
+    "label" : null,
+    "id" : "LIT1978Mashaf#t7syriac"
+  }, {
+    "color" : "blue",
+    "label" : "Qidra",
+    "id" : "LIT1959Mashaf#t2Arabic"
+  }, {
+    "color" : "blue",
+    "label" : "Šarḥ sabab intiqāl mamlakat Sulaymān malik ʾIsrāʾīl ʾilā bilād an-naǧāšīya allatī hiya al-ḥabaša",
+    "id" : "LIT1709Kebran#t2arabic"
+  }, {
+    "color" : "blue",
+    "label" : null,
+    "id" : "LIT1293Dersan#t4arabic"
+  }, {
+    "color" : "blue",
+    "label" : null,
+    "id" : "LIT1958Mashaf#t3greek"
+  }, {
+    "color" : "blue",
+    "label" : "CANT 325",
+    "id" : "LIT1124Apocal#t3greek"
+  }, {
+    "color" : "blue",
+    "label" : "ʾAksīmāris",
+    "id" : "LIT1046Aksima#t2arabic"
+  }, {
+    "color" : "blue",
+    "label" : "Iʿtirāf al-ʾābāʾ",
+    "id" : "LIT1586Hayman#t2arabic"
+  }, {
+    "color" : "blue",
+    "label" : "CPG 2257",
+    "id" : "LIT1914Mashaf#t3greek"
+  }, {
+    "color" : "blue",
+    "label" : "Πανδέκται τῶν ἑρμηνείον τῶν θείον ἐντολῶν τοῦ Κυρίου",
+    "id" : "LIT1933Mashaf#t3greek"
+  }, {
+    "color" : "blue",
+    "label" : "Arabic Wisdom of Sibyl",
+    "id" : "LIT2353SibylW#t2arabic"
+  }, {
+    "color" : "blue",
+    "label" : "Greek Secundus",
+    "id" : "LIT2625ZenaSe#t2greek"
+  }, {
+    "color" : "blue",
+    "label" : null,
+    "id" : "LIT2625ZenaSe#t3arabic LIT2625ZenaSe#t4syr"
+  }, {
+    "color" : "blue",
+    "label" : "Arabic Creed of Jacob Baradaeus",
+    "id" : "LIT4010Haymanotu#t2arabic"
+  }, {
+    "color" : "blue",
+    "label" : "المجمع المبارك",
+    "id" : "LIT4723TarikaWaldaAmid#t2"
+  }, {
+    "color" : "blue",
+    "label" : "Arabic Vorlage",
+    "id" : "LIT4018Mashafa#t2arabic"
+  }, {
+    "color" : "blue",
+    "label" : "faṣl fī-mā yaǧibu ʿalā\n                        ṭ-ṭabīb maʿrifatihī ʾaʿnī muʿallim al-iʿtirāf",
+    "id" : "LIT4018Mashafa#t3arabic"
+  }, {
+    "color" : "blue",
+    "label" : "Kitāb aṭ-ṭibb ar-rūḥānī",
+    "id" : "LIT4017Mashafa#t2arabic"
+  }, {
+    "color" : "blue",
+    "label" : "Arabic Romance of Alexander",
+    "id" : "LIT2616Zenaes#t4arabic"
+  }, {
+    "color" : "red",
+    "label" : "gez",
+    "id" : "gez"
+  }, {
+    "color" : "red",
+    "label" : "ar",
+    "id" : "ar"
+  }, {
+    "color" : "red",
+    "label" : "geo",
+    "id" : "geo"
+  }, {
+    "color" : "red",
+    "label" : "grc",
+    "id" : "grc"
+  }, {
+    "color" : "red",
+    "label" : "am",
+    "id" : "am"
+  }, {
+    "color" : "red",
+    "label" : "",
+    "id" : ""
+  }, {
+    "color" : "red",
+    "label" : "la",
+    "id" : "la"
+  }, {
+    "color" : "red",
+    "label" : "de",
+    "id" : "de"
+  }, {
+    "color" : "red",
+    "label" : "cop",
+    "id" : "cop"
+  }, {
+    "color" : "red",
+    "label" : "syr",
+    "id" : "syr"
+  }, {
+    "color" : "red",
+    "label" : "pal",
+    "id" : "pal"
+  }, {
+    "color" : "red",
+    "label" : "at",
+    "id" : "at"
+  }, {
+    "color" : "red",
+    "label" : "he",
+    "id" : "he"
+  }, {
+    "color" : "green",
+    "label" : "Paks2",
+    "id" : "Paks2"
+  }, {
+    "color" : "green",
+    "label" : "Not_Specified",
+    "id" : "Not_Specified"
+  }, {
+    "color" : "green",
+    "label" : "Paks1",
+    "id" : "Paks1"
+  }, {
+    "color" : "green",
+    "label" : "Paks1 Paks2",
+    "id" : "Paks1 Paks2"
+  } ];
+
+  // create an array with edges
+  var edges = [ {
+    "from" : "LIT3953MashafaQ",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "saws:isVersionInAnotherLanguageOf",
+    "to" : "LIT3953MashafaQ#t2Arabic"
+  }, {
+    "from" : "LIT3953MashafaQ#t2Arabic",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "saws:isVersionInAnotherLanguageOf",
+    "to" : "LIT3953MashafaQ#t3Greek"
+  }, {
+    "from" : "LIT1399Filkes#t6arabic",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "saws:isVersionInAnotherLanguageOf",
+    "to" : "LIT1399Filkes#t5syriac"
+  }, {
+    "from" : "LIT1399Filkes#t1",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "saws:isVersionInAnotherLanguageOf",
+    "to" : "LIT1399Filkes#t6arabic"
+  }, {
+    "from" : "LIT1461Gadlah#t1",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "saws:isVersionInAnotherLanguageOf",
+    "to" : "LIT1461Gadlah#t2arabic"
+  }, {
+    "from" : "LIT1899Martyr#t1",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "saws:isVersionInAnotherLanguageOf",
+    "to" : "LIT1899Martyr#t3arabic"
+  }, {
+    "from" : "LIT1199Barala#t1",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "saws:isVersionInAnotherLanguageOf",
+    "to" : "LIT1199Barala#t7arabic"
+  }, {
+    "from" : "LIT1199Barala#t4arabic",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "saws:isVersionInAnotherLanguageOf",
+    "to" : "LIT1199Barala#t3pahlavi"
+  }, {
+    "from" : "LIT1199Barala#t5georgian",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "saws:isVersionInAnotherLanguageOf",
+    "to" : "LIT1199Barala#t4arabic"
+  }, {
+    "from" : "LIT1199Barala#t7arabic",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "saws:isVersionInAnotherLanguageOf",
+    "to" : "LIT1199Barala#t6greek"
+  }, {
+    "from" : "LIT3952MashafaQ",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "saws:isVersionInAnotherLanguageOf",
+    "to" : "LIT3952MashafaQ#t2Arabic"
+  }, {
+    "from" : "LIT3952MashafaQ#t2Arabic",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "saws:isVersionInAnotherLanguageOf",
+    "to" : "LIT3952MashafaQ#t3Greek"
+  }, {
+    "from" : "LIT3989Aragawi#t1",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "saws:isVersionInAnotherLanguageOf",
+    "to" : "LIT3989Aragawi#t2arabic"
+  }, {
+    "from" : "LIT3989Aragawi#t2arabic",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "saws:isVersionInAnotherLanguageOf",
+    "to" : "LIT3989Aragawi#t3syriac"
+  }, {
+    "from" : "LIT3171Commen#t2arabic",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "saws:isVersionInAnotherLanguageOf",
+    "to" : "LIT3171Commen#t2greek"
+  }, {
+    "from" : "LIT3171Commen#t1",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "saws:isVersionInAnotherLanguageOf",
+    "to" : "LIT3171Commen#t2arabic"
+  }, {
+    "from" : "LIT1978Mashaf#t1",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "saws:isVersionInAnotherLanguageOf",
+    "to" : "LIT1978Mashaf#t4arabic"
+  }, {
+    "from" : "LIT1978Mashaf#t4arabic",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "saws:isVersionInAnotherLanguageOf",
+    "to" : "LIT1978Mashaf#t7syriac"
+  }, {
+    "from" : "LIT1959Mashaf#t1",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "saws:isVersionInAnotherLanguageOf",
+    "to" : "LIT1959Mashaf#t2Arabic"
+  }, {
+    "from" : "LIT1709Kebran#t1",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "saws:isVersionInAnotherLanguageOf",
+    "to" : "LIT1709Kebran#t2arabic"
+  }, {
+    "from" : "LIT1293Dersan#t1",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "saws:isVersionInAnotherLanguageOf",
+    "to" : "LIT1293Dersan#t4arabic"
+  }, {
+    "from" : "LIT1958Mashaf#t1",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "saws:isVersionInAnotherLanguageOf",
+    "to" : "LIT1958Mashaf#t2arabic"
+  }, {
+    "from" : "LIT1958Mashaf#t2arabic",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "saws:isVersionInAnotherLanguageOf",
+    "to" : "LIT1958Mashaf#t3greek"
+  }, {
+    "from" : "LIT1124Apocal#t4arabic",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "saws:isVersionInAnotherLanguageOf",
+    "to" : "LIT1124Apocal#t3greek"
+  }, {
+    "from" : "LIT1124Apocal#t1",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "saws:isVersionInAnotherLanguageOf",
+    "to" : "LIT1124Apocal#t4arabic"
+  }, {
+    "from" : "LIT1046Aksima#t1",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "saws:isVersionInAnotherLanguageOf",
+    "to" : "LIT1046Aksima#t2arabic"
+  }, {
+    "from" : "LIT1586Hayman#t1",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "saws:isVersionInAnotherLanguageOf",
+    "to" : "LIT1586Hayman#t2arabic"
+  }, {
+    "from" : "LIT1914Mashaf#t4arabic",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "saws:isVersionInAnotherLanguageOf",
+    "to" : "LIT1914Mashaf#t3greek"
+  }, {
+    "from" : "LIT1914Mashaf#t1",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "saws:isVersionInAnotherLanguageOf",
+    "to" : "LIT1914Mashaf#t4arabic"
+  }, {
+    "from" : "LIT1933Mashaf#t1",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "saws:isVersionInAnotherLanguageOf",
+    "to" : "LIT1933Mashaf#t2arabic"
+  }, {
+    "from" : "LIT1933Mashaf#t2arabic",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "saws:isVersionInAnotherLanguageOf",
+    "to" : "LIT1933Mashaf#t3greek"
+  }, {
+    "from" : "LIT2353SibylW#t1",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "saws:isVersionInAnotherLanguageOf",
+    "to" : "LIT2353SibylW#t2arabic"
+  }, {
+    "from" : "LIT2625ZenaSe#t3arabic",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "saws:isVersionInAnotherLanguageOf",
+    "to" : "LIT2625ZenaSe#t2greek"
+  }, {
+    "from" : "LIT2625ZenaSe#t1",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "saws:isVersionInAnotherLanguageOf",
+    "to" : "LIT2625ZenaSe#t3arabic LIT2625ZenaSe#t4syr"
+  }, {
+    "from" : "LIT4010Haymanotu#t1",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "saws:isVersionInAnotherLanguageOf",
+    "to" : "LIT4010Haymanotu#t2arabic"
+  }, {
+    "from" : "LIT4723TarikaWaldaAmid#t1",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "saws:isVersionInAnotherLanguageOf",
+    "to" : "LIT4723TarikaWaldaAmid#t2"
+  }, {
+    "from" : "LIT4018Mashafa#t1",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "saws:isVersionOf",
+    "to" : "LIT4018Mashafa#t2arabic"
+  }, {
+    "from" : "LIT4018Mashafa#Introduction3",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "saws:isVersionInAnotherLanguageOf",
+    "to" : "LIT4018Mashafa#t3arabic"
+  }, {
+    "from" : "LIT4017Mashafa#t1",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "saws:isVersionInAnotherLanguageOf",
+    "to" : "LIT4017Mashafa#t2arabic"
+  }, {
+    "from" : "LIT2616Zenaes#t1",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "saws:isVersionInAnotherLanguageOf",
+    "to" : "LIT2616Zenaes#t4arabic"
+  }, {
+    "from" : "LIT3953MashafaQ",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "language",
+    "to" : "gez"
+  }, {
+    "from" : "LIT3953MashafaQ#t2Arabic",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "language",
+    "to" : "ar"
+  }, {
+    "from" : "LIT3953MashafaQ#t2Arabic",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "language",
+    "to" : "ar"
+  }, {
+    "from" : "LIT3953MashafaQ#t3Greek",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "language",
+    "to" : "grc"
+  }, {
+    "from" : "LIT1399Filkes#t6arabic",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "language",
+    "to" : "ar"
+  }, {
+    "from" : "LIT1399Filkes#t5syriac",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "language",
+    "to" : "syr"
+  }, {
+    "from" : "LIT1399Filkes#t1",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "language",
+    "to" : "gez"
+  }, {
+    "from" : "LIT1399Filkes#t6arabic",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "language",
+    "to" : "ar"
+  }, {
+    "from" : "LIT1461Gadlah#t1",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "language",
+    "to" : "gez"
+  }, {
+    "from" : "LIT1461Gadlah#t2arabic",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "language",
+    "to" : "ar"
+  }, {
+    "from" : "LIT1899Martyr#t1",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "language",
+    "to" : "gez"
+  }, {
+    "from" : "LIT1899Martyr#t3arabic",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "language",
+    "to" : "ar"
+  }, {
+    "from" : "LIT1199Barala#t1",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "language",
+    "to" : "gez"
+  }, {
+    "from" : "LIT1199Barala#t7arabic",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "language",
+    "to" : "ar"
+  }, {
+    "from" : "LIT1199Barala#t4arabic",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "language",
+    "to" : "ar"
+  }, {
+    "from" : "LIT1199Barala#t3pahlavi",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "language",
+    "to" : "pal"
+  }, {
+    "from" : "LIT1199Barala#t5georgian",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "language",
+    "to" : "geo"
+  }, {
+    "from" : "LIT1199Barala#t4arabic",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "language",
+    "to" : "ar"
+  }, {
+    "from" : "LIT1199Barala#t7arabic",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "language",
+    "to" : "ar"
+  }, {
+    "from" : "LIT1199Barala#t6greek",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "language",
+    "to" : "grc"
+  }, {
+    "from" : "LIT3952MashafaQ",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "language",
+    "to" : "gez"
+  }, {
+    "from" : "LIT3952MashafaQ#t2Arabic",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "language",
+    "to" : "ar"
+  }, {
+    "from" : "LIT3952MashafaQ#t2Arabic",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "language",
+    "to" : "ar"
+  }, {
+    "from" : "LIT3952MashafaQ#t3Greek",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "language",
+    "to" : "grc"
+  }, {
+    "from" : "LIT3989Aragawi#t1",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "language",
+    "to" : "gez"
+  }, {
+    "from" : "LIT3989Aragawi#t2arabic",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "language",
+    "to" : "ar"
+  }, {
+    "from" : "LIT3989Aragawi#t2arabic",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "language",
+    "to" : "ar"
+  }, {
+    "from" : "LIT3989Aragawi#t3syriac",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "language",
+    "to" : "syr"
+  }, {
+    "from" : "LIT3171Commen#t2arabic",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "language",
+    "to" : "ar"
+  }, {
+    "from" : "LIT3171Commen#t2greek",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "language",
+    "to" : "grc"
+  }, {
+    "from" : "LIT3171Commen#t1",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "language",
+    "to" : "gez"
+  }, {
+    "from" : "LIT3171Commen#t2arabic",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "language",
+    "to" : "ar"
+  }, {
+    "from" : "LIT1978Mashaf#t1",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "language",
+    "to" : "gez"
+  }, {
+    "from" : "LIT1978Mashaf#t4arabic",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "language",
+    "to" : "ar"
+  }, {
+    "from" : "LIT1978Mashaf#t4arabic",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "language",
+    "to" : "ar"
+  }, {
+    "from" : "LIT1978Mashaf#t7syriac",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "language",
+    "to" : "syr"
+  }, {
+    "from" : "LIT1959Mashaf#t1",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "language",
+    "to" : "gez"
+  }, {
+    "from" : "LIT1959Mashaf#t2Arabic",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "language",
+    "to" : "ar"
+  }, {
+    "from" : "LIT1709Kebran#t1",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "language",
+    "to" : "gez"
+  }, {
+    "from" : "LIT1709Kebran#t2arabic",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "language",
+    "to" : "ar"
+  }, {
+    "from" : "LIT1293Dersan#t1",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "language",
+    "to" : "gez"
+  }, {
+    "from" : "LIT1293Dersan#t4arabic",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "language",
+    "to" : "ar"
+  }, {
+    "from" : "LIT1958Mashaf#t1",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "language",
+    "to" : "gez"
+  }, {
+    "from" : "LIT1958Mashaf#t2arabic",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "language",
+    "to" : "ar"
+  }, {
+    "from" : "LIT1958Mashaf#t2arabic",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "language",
+    "to" : "ar"
+  }, {
+    "from" : "LIT1958Mashaf#t3greek",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "language",
+    "to" : "grc"
+  }, {
+    "from" : "LIT1124Apocal#t4arabic",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "language",
+    "to" : "ar"
+  }, {
+    "from" : "LIT1124Apocal#t3greek",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "language",
+    "to" : "grc"
+  }, {
+    "from" : "LIT1124Apocal#t1",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "language",
+    "to" : "gez"
+  }, {
+    "from" : "LIT1124Apocal#t4arabic",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "language",
+    "to" : "ar"
+  }, {
+    "from" : "LIT1046Aksima#t1",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "language",
+    "to" : "gez"
+  }, {
+    "from" : "LIT1046Aksima#t2arabic",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "language",
+    "to" : "ar"
+  }, {
+    "from" : "LIT1586Hayman#t1",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "language",
+    "to" : "gez"
+  }, {
+    "from" : "LIT1586Hayman#t2arabic",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "language",
+    "to" : "ar"
+  }, {
+    "from" : "LIT1914Mashaf#t4arabic",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "language",
+    "to" : "ar"
+  }, {
+    "from" : "LIT1914Mashaf#t3greek",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "language",
+    "to" : "grc"
+  }, {
+    "from" : "LIT1914Mashaf#t1",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "language",
+    "to" : "gez"
+  }, {
+    "from" : "LIT1914Mashaf#t4arabic",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "language",
+    "to" : "ar"
+  }, {
+    "from" : "LIT1933Mashaf#t1",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "language",
+    "to" : "gez"
+  }, {
+    "from" : "LIT1933Mashaf#t2arabic",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "language",
+    "to" : "ar"
+  }, {
+    "from" : "LIT1933Mashaf#t2arabic",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "language",
+    "to" : "ar"
+  }, {
+    "from" : "LIT1933Mashaf#t3greek",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "language",
+    "to" : "grc"
+  }, {
+    "from" : "LIT2353SibylW#t1",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "language",
+    "to" : "gez"
+  }, {
+    "from" : "LIT2353SibylW#t2arabic",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "language",
+    "to" : "ar"
+  }, {
+    "from" : "LIT2625ZenaSe#t3arabic",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "language",
+    "to" : "ar"
+  }, {
+    "from" : "LIT2625ZenaSe#t2greek",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "language",
+    "to" : "grc"
+  }, {
+    "from" : "LIT2625ZenaSe#t1",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "language",
+    "to" : "gez"
+  }, {
+    "from" : "LIT2625ZenaSe#t3arabic LIT2625ZenaSe#t4syr",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "language",
+    "to" : "ar"
+  }, {
+    "from" : "LIT4010Haymanotu#t1",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "language",
+    "to" : "gez"
+  }, {
+    "from" : "LIT4010Haymanotu#t2arabic",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "language",
+    "to" : "ar"
+  }, {
+    "from" : "LIT4723TarikaWaldaAmid#t1",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "language",
+    "to" : "gez"
+  }, {
+    "from" : "LIT4723TarikaWaldaAmid#t2",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "language",
+    "to" : "ar"
+  }, {
+    "from" : "LIT4018Mashafa#t1",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "language",
+    "to" : "gez"
+  }, {
+    "from" : "LIT4018Mashafa#t2arabic",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "language",
+    "to" : "ar"
+  }, {
+    "from" : "LIT4018Mashafa#Introduction3",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "language",
+    "to" : "gez"
+  }, {
+    "from" : "LIT4018Mashafa#t3arabic",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "language",
+    "to" : "ar"
+  }, {
+    "from" : "LIT4017Mashafa#t1",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "language",
+    "to" : "gez"
+  }, {
+    "from" : "LIT4017Mashafa#t2arabic",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "language",
+    "to" : "ar"
+  }, {
+    "from" : "LIT2616Zenaes#t1",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "language",
+    "to" : "gez"
+  }, {
+    "from" : "LIT2616Zenaes#t4arabic",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "language",
+    "to" : "ar"
+  }, {
+    "from" : "LIT3953MashafaQ",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "period",
+    "to" : "Paks2"
+  }, {
+    "from" : "LIT3953MashafaQ#t2Arabic",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "period",
+    "to" : "Paks2"
+  }, {
+    "from" : "LIT3953MashafaQ#t2Arabic",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "period",
+    "to" : "Paks2"
+  }, {
+    "from" : "LIT3953MashafaQ#t3Greek",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "period",
+    "to" : "Paks2"
+  }, {
+    "from" : "LIT1399Filkes#t6arabic",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "period",
+    "to" : null
+  }, {
+    "from" : "LIT1399Filkes#t5syriac",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "period",
+    "to" : null
+  }, {
+    "from" : "LIT1399Filkes#t1",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "period",
+    "to" : null
+  }, {
+    "from" : "LIT1399Filkes#t6arabic",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "period",
+    "to" : null
+  }, {
+    "from" : "LIT1461Gadlah#t1",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "period",
+    "to" : null
+  }, {
+    "from" : "LIT1461Gadlah#t2arabic",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "period",
+    "to" : null
+  }, {
+    "from" : "LIT1899Martyr#t1",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "period",
+    "to" : null
+  }, {
+    "from" : "LIT1899Martyr#t3arabic",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "period",
+    "to" : null
+  }, {
+    "from" : "LIT1199Barala#t1",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "period",
+    "to" : null
+  }, {
+    "from" : "LIT1199Barala#t7arabic",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "period",
+    "to" : null
+  }, {
+    "from" : "LIT1199Barala#t4arabic",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "period",
+    "to" : null
+  }, {
+    "from" : "LIT1199Barala#t3pahlavi",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "period",
+    "to" : null
+  }, {
+    "from" : "LIT1199Barala#t5georgian",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "period",
+    "to" : null
+  }, {
+    "from" : "LIT1199Barala#t4arabic",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "period",
+    "to" : null
+  }, {
+    "from" : "LIT1199Barala#t7arabic",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "period",
+    "to" : null
+  }, {
+    "from" : "LIT1199Barala#t6greek",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "period",
+    "to" : null
+  }, {
+    "from" : "LIT3952MashafaQ",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "period",
+    "to" : "Paks2"
+  }, {
+    "from" : "LIT3952MashafaQ#t2Arabic",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "period",
+    "to" : "Paks2"
+  }, {
+    "from" : "LIT3952MashafaQ#t2Arabic",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "period",
+    "to" : "Paks2"
+  }, {
+    "from" : "LIT3952MashafaQ#t3Greek",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "period",
+    "to" : "Paks2"
+  }, {
+    "from" : "LIT3989Aragawi#t1",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "period",
+    "to" : "Paks2"
+  }, {
+    "from" : "LIT3989Aragawi#t2arabic",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "period",
+    "to" : "Paks2"
+  }, {
+    "from" : "LIT3989Aragawi#t2arabic",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "period",
+    "to" : "Paks2"
+  }, {
+    "from" : "LIT3989Aragawi#t3syriac",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "period",
+    "to" : "Paks2"
+  }, {
+    "from" : "LIT3171Commen#t2arabic",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "period",
+    "to" : "Paks2"
+  }, {
+    "from" : "LIT3171Commen#t2greek",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "period",
+    "to" : "Paks2"
+  }, {
+    "from" : "LIT3171Commen#t1",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "period",
+    "to" : "Paks2"
+  }, {
+    "from" : "LIT3171Commen#t2arabic",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "period",
+    "to" : "Paks2"
+  }, {
+    "from" : "LIT1978Mashaf#t1",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "period",
+    "to" : null
+  }, {
+    "from" : "LIT1978Mashaf#t4arabic",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "period",
+    "to" : null
+  }, {
+    "from" : "LIT1978Mashaf#t4arabic",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "period",
+    "to" : null
+  }, {
+    "from" : "LIT1978Mashaf#t7syriac",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "period",
+    "to" : null
+  }, {
+    "from" : "LIT1959Mashaf#t1",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "period",
+    "to" : null
+  }, {
+    "from" : "LIT1959Mashaf#t2Arabic",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "period",
+    "to" : null
+  }, {
+    "from" : "LIT1709Kebran#t1",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "period",
+    "to" : null
+  }, {
+    "from" : "LIT1709Kebran#t2arabic",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "period",
+    "to" : null
+  }, {
+    "from" : "LIT1293Dersan#t1",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "period",
+    "to" : null
+  }, {
+    "from" : "LIT1293Dersan#t4arabic",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "period",
+    "to" : null
+  }, {
+    "from" : "LIT1958Mashaf#t1",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "period",
+    "to" : null
+  }, {
+    "from" : "LIT1958Mashaf#t2arabic",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "period",
+    "to" : null
+  }, {
+    "from" : "LIT1958Mashaf#t2arabic",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "period",
+    "to" : null
+  }, {
+    "from" : "LIT1958Mashaf#t3greek",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "period",
+    "to" : null
+  }, {
+    "from" : "LIT1124Apocal#t4arabic",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "period",
+    "to" : null
+  }, {
+    "from" : "LIT1124Apocal#t3greek",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "period",
+    "to" : null
+  }, {
+    "from" : "LIT1124Apocal#t1",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "period",
+    "to" : null
+  }, {
+    "from" : "LIT1124Apocal#t4arabic",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "period",
+    "to" : null
+  }, {
+    "from" : "LIT1046Aksima#t1",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "period",
+    "to" : null
+  }, {
+    "from" : "LIT1046Aksima#t2arabic",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "period",
+    "to" : null
+  }, {
+    "from" : "LIT1586Hayman#t1",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "period",
+    "to" : null
+  }, {
+    "from" : "LIT1586Hayman#t2arabic",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "period",
+    "to" : null
+  }, {
+    "from" : "LIT1914Mashaf#t4arabic",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "period",
+    "to" : null
+  }, {
+    "from" : "LIT1914Mashaf#t3greek",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "period",
+    "to" : null
+  }, {
+    "from" : "LIT1914Mashaf#t1",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "period",
+    "to" : null
+  }, {
+    "from" : "LIT1914Mashaf#t4arabic",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "period",
+    "to" : null
+  }, {
+    "from" : "LIT1933Mashaf#t1",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "period",
+    "to" : "Paks2"
+  }, {
+    "from" : "LIT1933Mashaf#t2arabic",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "period",
+    "to" : "Paks2"
+  }, {
+    "from" : "LIT1933Mashaf#t2arabic",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "period",
+    "to" : "Paks2"
+  }, {
+    "from" : "LIT1933Mashaf#t3greek",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "period",
+    "to" : "Paks2"
+  }, {
+    "from" : "LIT2353SibylW#t1",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "period",
+    "to" : null
+  }, {
+    "from" : "LIT2353SibylW#t2arabic",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "period",
+    "to" : null
+  }, {
+    "from" : "LIT2625ZenaSe#t3arabic",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "period",
+    "to" : "Paks1"
+  }, {
+    "from" : "LIT2625ZenaSe#t2greek",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "period",
+    "to" : "Paks1"
+  }, {
+    "from" : "LIT2625ZenaSe#t1",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "period",
+    "to" : "Paks1"
+  }, {
+    "from" : "LIT2625ZenaSe#t3arabic LIT2625ZenaSe#t4syr",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "period",
+    "to" : "Paks1"
+  }, {
+    "from" : "LIT4010Haymanotu#t1",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "period",
+    "to" : "Paks1 Paks2"
+  }, {
+    "from" : "LIT4010Haymanotu#t2arabic",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "period",
+    "to" : "Paks1 Paks2"
+  }, {
+    "from" : "LIT4723TarikaWaldaAmid#t1",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "period",
+    "to" : "Paks2"
+  }, {
+    "from" : "LIT4723TarikaWaldaAmid#t2",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "period",
+    "to" : "Paks2"
+  }, {
+    "from" : "LIT4018Mashafa#t1",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "period",
+    "to" : "Paks1 Paks2"
+  }, {
+    "from" : "LIT4018Mashafa#t2arabic",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "period",
+    "to" : "Paks1 Paks2"
+  }, {
+    "from" : "LIT4018Mashafa#Introduction3",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "period",
+    "to" : "Paks1 Paks2"
+  }, {
+    "from" : "LIT4018Mashafa#t3arabic",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "period",
+    "to" : "Paks1 Paks2"
+  }, {
+    "from" : "LIT4017Mashafa#t1",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "period",
+    "to" : "Paks1 Paks2"
+  }, {
+    "from" : "LIT4017Mashafa#t2arabic",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "period",
+    "to" : "Paks1 Paks2"
+  }, {
+    "from" : "LIT2616Zenaes#t1",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "period",
+    "to" : null
+  }, {
+    "from" : "LIT2616Zenaes#t4arabic",
+    "font" : {
+      "align" : "middle"
+    },
+    "label" : "period",
+    "to" : null
+  } ];
+
+  // create a network
+  var container = document.getElementById('mynetwork');
+  var data = {
+    nodes: nodes,
+    edges: edges
+  };
+  var options = {layout:{randomSeed:8}};
+  var network = new vis.Network(container, data, options);
+  network.on("selectNode", function(params) {
+      if (params.nodes.length == 1) {
+          if (network.isCluster(params.nodes[0]) == true) {
+              network.openCluster(params.nodes[0]);
+          }
+      }
+  });
+
+  function clusterByCid() {
+      network.setData(data);
+      var clusterOptionsByData = {
+          joinCondition:function(childOptions) {
+              return childOptions.cid == 1;
+          },
+          clusterNodeProperties: {id:'cidCluster', borderWidth:3, shape:'database'}
+      };
+      network.cluster(clusterOptionsByData);
+  }
+  function clusterByColor() {
+      network.setData(data);
+      var colors = ['orange','lime','DarkViolet'];
+      var clusterOptionsByData;
+      for (var i = 0; i < colors.length; i++) {
+          var color = colors[i];
+          clusterOptionsByData = {
+              joinCondition: function (childOptions) {
+                  return childOptions.color.background == color; // the color is fully defined in the node.
+              },
+              processProperties: function (clusterOptions, childNodes, childEdges) {
+                  var totalMass = 0;
+                  for (var i = 0; i < childNodes.length; i++) {
+                      totalMass += childNodes[i].mass;
+                  }
+                  clusterOptions.mass = totalMass;
+                  return clusterOptions;
+              },
+              clusterNodeProperties: {id: 'cluster:' + color, borderWidth: 3, shape: 'database', color:color, label:'color:' + color}
+          };
+          network.cluster(clusterOptionsByData);
+      }
+  }
+  function clusterByConnection() {
+      network.setData(data);
+      network.clusterByConnection(1)
+  }
+  function clusterOutliers() {
+      network.setData(data);
+      network.clusterOutliers();
+  }
+  function clusterByHubsize() {
+      network.setData(data);
+      var clusterOptionsByData = {
+          processProperties: function(clusterOptions, childNodes) {
+            clusterOptions.label = "[" + childNodes.length + "]";
+            return clusterOptions;
+          },
+          clusterNodeProperties: {borderWidth:3, shape:'box', font:{size:30}}
+      };
+      network.clusterByHubsize(undefined, clusterOptionsByData);
+  }
+
+</script>
+
+
+
+</body>
+</html>
