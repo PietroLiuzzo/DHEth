@@ -1,7 +1,10 @@
 xquery version "3.1" ;
 (:~
- : This module based on the one provided in the shakespare example app
- : produces a xslfo temporary object and passes it to FOP to produce a PDF
+ : This module, initially 
+ : based on the one provided in the 
+ Shakespare example app in the eXist-db repository,
+ : produces a XSL FO temporary object and passes it to
+ : Apache FOP as extension module in eXist-db, to produce a PDF
  : @author Pietro Liuzzo <pietro.liuzzo@uni-hamburg.de'>
  :)
 
@@ -9,55 +12,37 @@ import module namespace config = "http://betamasaheft.eu/DHEth/config" at "confi
 import module namespace console = "http://exist-db.org/xquery/console";
 import module namespace http = "http://expath.org/ns/http-client";
 
+(:the namespaces used for functions and data:)
 declare namespace fo = "http://www.w3.org/1999/XSL/Format";
 declare namespace xslfo = "http://exist-db.org/xquery/xslfo";
 declare namespace tei = "http://www.tei-c.org/ns/1.0";
 declare namespace ex = "http://www.tei-c.org/ns/Examples";
 declare namespace file = "http://exist-db.org/xquery/file";
 declare namespace functx = "http://www.functx.com";
+(:this is a madeup namespace for the local bibliography which 
+contains the HTML output of Zotero produced in generateBibliography.xql:)
 declare namespace biblio = 'dheth.biblio';
 
-
-declare variable $local:issue := '';
+(:~ The location of the Zotero Bibliography, in this case the user library of Pietro Liuzzo:)
 declare variable $local:zotcollection := 'https://api.zotero.org/users/1405276/';
-declare variable $local:publication := '';
 
-declare variable $local:bibliography := doc('/db/apps/DHEth/data/bibliography.xml');
 (:    This bibliography is generated with the script generateBibliography.xql which calls 
 the Zotero main library of references for this book and collects the citations and the 
 full references adjusting the handle for the references so that it has the appropriate letter.
 Doing this the http calls to Zotero are done only on updating of the bibliography, not on every run of the data to produce the pdf.:)
+declare variable $local:bibliography := doc('/db/apps/DHEth/data/bibliography.xml');
 
-
-declare function functx:index-of-node($nodes as node()*,
-$nodeToFind as node()) as xs:integer* {
-    
-    for $seq in (1 to count($nodes))
-    return
-        $seq[$nodes[$seq] is $nodeToFind]
-};
-
-declare function functx:capitalize-first($arg as xs:string?) as xs:string? {
-    
-    concat(upper-case(substring($arg, 1, 1)),
-    substring($arg, 2))
-};
-
-
-
-declare function fo:Zotero($ZoteroUniqueBMtag as xs:string) {
-    let $xml-url := concat($local:zotcollection||'items?tag=', $ZoteroUniqueBMtag, '&amp;format=bib&amp;style=hiob-ludolf-centre-for-ethiopian-studies&amp;linkwrap=1')
-    let $data := httpclient:get(xs:anyURI($xml-url), true(), <Headers/>)
-    let $datawithlink := fo:tei2fo($data//div[@class = 'csl-entry'])
-    return
-        $datawithlink
-};
-
+(:~ Configuration passed with the XSL-FO file to FOP, 
+includes fonts and hyphenation specification :)
 declare variable $local:fop-config :=
 let $fontsDir := config:get-fonts-dir()
 return
     <fop
         version="1.0">
+        <hyphenation-pattern lang="en">en_GB</hyphenation-pattern>
+        <hyphenation-pattern lang="de">de</hyphenation-pattern>
+        <hyphenation-pattern lang="it">it</hyphenation-pattern>
+        <hyphenation-pattern lang="gez">mul_ET</hyphenation-pattern>
         <strict-configuration>true</strict-configuration>
         <strict-validation>false</strict-validation>
         <base>./</base>
@@ -320,9 +305,23 @@ return
     </fop>
 ;
 
-declare function functx:index-of-string
-  ( $arg as xs:string? ,
-    $substring as xs:string )  as xs:integer* {
+(:~ helper functx function, retriving the index of a node :)
+declare function functx:index-of-node($nodes as node()*, $nodeToFind as node()) as xs:integer* {
+    
+    for $seq in (1 to count($nodes))
+    return
+        $seq[$nodes[$seq] is $nodeToFind]
+};
+
+(:~ helper functx function, capitalizing first letter in a string :)
+declare function functx:capitalize-first($arg as xs:string?) as xs:string? {
+    
+    concat(upper-case(substring($arg, 1, 1)),
+    substring($arg, 2))
+};
+
+(:~ helper functx function, returning the index at which a substring starts :)
+declare function functx:index-of-string( $arg as xs:string?, $substring as xs:string )  as xs:integer* {
 
   if (contains($arg, $substring))
   then (string-length(substring-before($arg, $substring))+1,
@@ -335,14 +334,30 @@ declare function functx:index-of-string
           string-length($substring))
   else ()
  } ;
- 
- 
 
+(:~ Set of functions used to produce citations and bibligraphy:)
+
+(:~ Given a unique tag, returns the formatted reference 
+according to the Hiob Ludolf Centre Style
+See https://betamasaheft.github.io/bibliography/ for the style guidelines and documentation
+:)
+declare function fo:Zotero($ZoteroUniqueBMtag as xs:string) {
+    let $xml-url := concat($local:zotcollection||'items?tag=', $ZoteroUniqueBMtag, '&amp;format=bib&amp;style=hiob-ludolf-centre-for-ethiopian-studies&amp;linkwrap=1')
+    let $data := httpclient:get(xs:anyURI($xml-url), true(), <Headers/>)
+    let $datawithlink := fo:tei2fo($data//div[@class = 'csl-entry'])
+    return
+        $datawithlink
+};
+
+(:~ given a unique tag, return the citation formatted according to the Hiob Ludolf Centre Style
+See https://betamasaheft.github.io/bibliography/ for the style guidelines and documentation:)
 declare function fo:zoteroCit($ZoteroUniqueBMtag as xs:string) {
 fo:tei2fo($local:bibliography//biblio:citation[parent::biblio:entry[@id=$ZoteroUniqueBMtag]])
    };
-        
-    
+            
+(:~ given a Zotero Collection ID, return the full bibliography 
+formatted according to the Hiob Ludolf Centre Style
+See https://betamasaheft.github.io/bibliography/ for the style guidelines and documentation:)
 declare function fo:zoteroBib($collectionKey){
  let $xml-url := concat($local:zotcollection||'collections/',$collectionKey,'/items?format=bib&amp;style=hiob-ludolf-centre-for-ethiopian-studies&amp;linkwrap=1')
 let $data := httpclient:get(xs:anyURI($xml-url), true(), <Headers/>)
@@ -353,15 +368,18 @@ let $data := httpclient:get(xs:anyURI($xml-url), true(), <Headers/>)
         
 };
 
+(:~ looks at the bibliography file in $local:bibliography and prints the bibliography for the
+xslfo:)
 declare function fo:zoteroBibfromCitation(){
 let $datawithlink := for $bib at $p in $local:bibliography//biblio:entry  
-    return <fo:block margin-bottom="2pt" start-indent="0.5cm" text-indent="-0.5cm" id="{$bib/@id}">[<fo:inline font-weight="bold">{$bib//biblio:citation/text()}</fo:inline>]  {fo:tei2fo($bib/biblio:reference/*:div)}</fo:block>
+    return <fo:block margin-bottom="2pt" start-indent="0.5cm" text-indent="-0.5cm" id="{$bib/@id}">[<fo:inline font-weight="bold">{
+    $bib//biblio:citation//text()}</fo:inline>]  {fo:tei2fo($bib/biblio:reference/*:div)}</fo:block>
     return
     $datawithlink
 
 };
 
-
+(:~ assigns a xml:lang according to what is in the data:)
 declare function fo:lang($lang as xs:string) {
     switch ($lang)
         case 'ar'
@@ -401,7 +419,44 @@ declare function fo:lang($lang as xs:string) {
             attribute font-family {'Ludolfus'}
 };
 
+(:~ iterates through the nodes passed to render them in xslfo,
+this is specific to what they need to be like in the desc of a figure:)
+declare function fo:figDesc2fo($nodes as node()*) {
+    for $node in $nodes
+    return 
+    typeswitch ($node)
+    
+ case element(tei:term)
+     return
+     $node/text()
+     case element(tei:ref)
+     return
+     string($node/@target)
+     case element(tei:bibl)
+     return
+     (
+            try{fo:zoteroCit($node/tei:ptr/@target)} 
+            catch * {console:log($err:description)},
+            if($node/tei:citedRange) then ', ' || (switch($node/tei:citedRange/@unit) 
+            case 'paragraph' return '§' case 'page' return '' default return string($node/tei:citedRange/@unit))||$node/tei:citedRange/text() else ()
+            )
+ case element(tei:placeName)
+     return
+      <fo:inline>{$node/text()}</fo:inline>
+     case element(tei:persName)
+     return
+      <fo:inline>{$node/text()} {if($node[@type='bm']) then '(ID:'||$node/@ref||')' else ()}</fo:inline>
+    
+    case element()
+        return
+            fo:tei2fo($node/node())
+    default
+        return
+            $node
+};
 
+(:~ iterates through the nodes passed to render them in xslfo, this is where the behaviour
+in rendering the TEI of the source files is defined :)
 declare function fo:tei2fo($nodes as node()*) {
     for $node in $nodes
     return
@@ -419,7 +474,7 @@ declare function fo:tei2fo($nodes as node()*) {
          <fo:inline background-color="red">{fo:tei2fo($node/node())}</fo:inline>
             case element(tei:TEI)
                 return
-                    <fo:block>{fo:tei2fo($node/node())}</fo:block>
+                    <fo:block hyphenate="true">{fo:tei2fo($node/node())}</fo:block>
             case element(tei:fileDesc)
                 return
                     fo:tei2fo($node/node())
@@ -431,7 +486,7 @@ declare function fo:tei2fo($nodes as node()*) {
                     fo:tei2fo($node/node())
             case element(tei:milestone)
             return 
-            <fo:block page-break-after="always"/>
+            <fo:block hyphenate="true" page-break-after="always"/>
             case element(tei:body)
                 return
                     fo:tei2fo($node/node())
@@ -444,15 +499,19 @@ declare function fo:tei2fo($nodes as node()*) {
                              if($wordcount lt 50) then
                              <fo:inline id="{string(root($node)/tei:TEI/@xml:id)}{generate-id($node)}">({$node/text()})</fo:inline>
                               else
-                            <fo:block id="{string(root($node)/tei:TEI/@xml:id)}{generate-id($node)}" text-align="right">{$node/text()}</fo:block> 
+                            <fo:block id="{string(root($node)/tei:TEI/@xml:id)}{generate-id($node)}" text-align="right" hyphenate="true">{$node/text()}</fo:block> 
                        else <fo:inline id="{string(root($node)/tei:TEI/@xml:id)}{generate-id($node)}">{$node/text()}</fo:inline>
                     else if($node/@type) then 
-                    <fo:inline ref-id="{substring-after($node/@corresp, '#')}">{
+                    <fo:inline>{
                     switch($node/@type) 
-                    case 'chapter' return 'Ch.' || substring-after($node/@corresp, '#chapter') 
+                    case 'internal' return (
+                               'page ', <fo:page-number-citation
+                                ref-id="{string(root($node)/tei:TEI/@xml:id)}{string($node/@corresp)}"/>
+                                )
+                    case 'chapter' return 'Ch. ' || substring-after($node/@corresp, '#chapter') 
                     case 'figure' return (let $corresp := substring-after($node/@corresp, '#') 
                                                                                 let $figure:= root($node)//tei:*[@xml:id=$corresp]
-                                                              return  ('Fig.'   || (
+                                                              return  ('Fig. '   || (
                                                                                     if(contains(string(root($node)/tei:TEI/@xml:id), 'intro'))
                                                                                     then ' 0' 
                                                                                     else replace(string(root($node)/tei:TEI/@xml:id), 'chapter', ' '))
@@ -463,7 +522,11 @@ declare function fo:tei2fo($nodes as node()*) {
                    else
 (:     if the url is too long, add here and there              &#x200b;   and it will break there if needed  :)
                      <fo:basic-link
-                            external-destination="{string($node/@target)}">&lt;{if($node/text()) then $node/text() else string($node/@target)}&gt;</fo:basic-link>
+                            external-destination="{string($node/@target)}" hyphenate="false">&lt;{if($node/text()) then $node/text() else string($node/@target)}&gt;</fo:basic-link>
+            case element(tei:emph)
+                    return 
+            <fo:inline
+                            font-style='italic'>{$node/text()}</fo:inline>
             case element(tei:hi)
                     return 
                       if ($node/@rend = "rubric") then
@@ -505,6 +568,7 @@ declare function fo:tei2fo($nodes as node()*) {
                         text-align="center"
                         font-weight='700'
                         margin-bottom="12.24pt"
+                        hyphenate="true"
                         margin-top="25.2pt">{if(root($node)[starts-with(tei:TEI/@xml:id, 'chapter')]) then 'Chapter ' || substring-after(root($node)/tei:TEI/@xml:id, 'chapter') || '. ' else ()}{fo:tei2fo($node/tei:title)}</fo:block>
             
             case element(tei:note)
@@ -522,7 +586,7 @@ declare function fo:tei2fo($nodes as node()*) {
                                 <fo:list-block>
                                     <fo:list-item>
                                         <fo:list-item-label>
-                                            <fo:block>
+                                            <fo:block >
                                                 <fo:inline
                                                     vertical-align="text-top"
                                                     font-size="9pt"
@@ -531,6 +595,7 @@ declare function fo:tei2fo($nodes as node()*) {
                                         </fo:list-item-label>
                                         <fo:list-item-body>
                                             <fo:block
+                                            hyphenate="true"
                                                 space-before="0.45cm"
                                                 font-size="9pt"
                                                 line-height="11pt"
@@ -548,27 +613,42 @@ declare function fo:tei2fo($nodes as node()*) {
                         return
                         if($node/@type = 'gloss') 
                         then 
-                        <fo:block-container>{
+(:                        This handles only the Glossary.xml list :)
+                        <fo:list-block provisional-distance-between-starts="70pt" provisional-label-separation="3pt">{
                         for $term in $node/tei:item
                         let $lab := $term/tei:label/text()
                         return
-                        (<fo:block>
-                        <fo:block font-weight="800" margin-right="5mm">{$lab}</fo:block>
-                        <fo:block>{fo:tei2fo($term/node()[name()!='label'])}</fo:block>
-                        </fo:block>,
-                        <fo:block  margin-bottom="3mm">See pages: {
-                        let $occs := for $occ in collection('/db/apps/DHEth/data')//tei:term[text() = $lab] 
-                                                order by $occ
+                        <fo:list-item margin-bottom="5pt">
+                        <fo:list-item-label end-indent="label-end()">
+                        <fo:block font-weight="800" margin-right="5mm" hyphenate="false">{$lab}</fo:block>
+                        </fo:list-item-label>
+                         <fo:list-item-body  start-indent="body-start()">
+                        <fo:block hyphenate="true">{fo:tei2fo($term/node()[name()!='label'])}
+                        
+                        [See pages: {
+                        let $references := (collection('/db/apps/DHEth/data/chapters')//tei:term[lower-case(text()) = lower-case($lab)], collection('/db/apps/DHEth/data/front')//tei:term[lower-case(text()) = lower-case($lab)])
+                        let $occs := for $occ at $p in $references
+                                                let $chapterNumber :=  if(contains(string(root($occ)/tei:TEI/@xml:id), 'intro')) then ' 0' 
+                else replace(string(root($occ)/tei:TEI/@xml:id), 'chapter', ' ')
+                
+                group by $chapterNumber
+                order by $chapterNumber
+                return
+                  (if($chapterNumber=' 0') then 'Intro: ' else 'Chapter' || $chapterNumber || ': ',
+                  for $oc at $p in $occ
+                                                order by $oc
                                                           return 
-                                                                  (<fo:page-number-citation
-                                                                                   ref-id="{generate-id($occ)}"/>,
-                                                                                   ' ')
-                        return
-                        $occs
-                        }
+                                                          (<fo:page-number-citation
+                                                                                   ref-id="{string(root($oc)/tei:TEI/@xml:id)}{generate-id($oc)}{$oc/text()}"/>,
+                                                                                   if($p=count($occ)) then '; ' else ', ')
+                        )
+                        return $occs
+                        }]
                         </fo:block>
-                        )}
-                        </fo:block-container>
+                        </fo:list-item-body>
+                        </fo:list-item>
+                        }
+                        </fo:list-block>
                         else
 (:                        if the list is inside a quotation which is displaied, then the all indentation should be moved of that measure as well, otherways it will not align properly relative to its block:)
                         let $par := if($node/ancestor::tei:quote) then 1 else ()
@@ -576,7 +656,7 @@ declare function fo:tei2fo($nodes as node()*) {
                         <fo:list-block 
                         provisional-distance-between-starts="6mm" 
                provisional-label-separation="6mm" 
-               space-after="6mm" >
+               >
                {attribute start-indent {((0.43 * (1 +count($node/ancestor::tei:list))) + $par)  || "cm"}}
                                     {fo:tei2fo($node/node())}
                                 </fo:list-block>
@@ -609,7 +689,7 @@ declare function fo:tei2fo($nodes as node()*) {
                                             </fo:block>
                                         </fo:list-item-label>
                                         <fo:list-item-body start-indent="body-start()">
-                                            <fo:block>{
+                                            <fo:block hyphenate="true">{
                                 
                                             fo:tei2fo($node/node())
                                             }</fo:block>
@@ -668,7 +748,8 @@ declare function fo:tei2fo($nodes as node()*) {
             fo:tei2fo($node/node())
    case element(tei:certainty)
         return
-            <fo:inline>(?)</fo:inline>
+            <fo:inline>?</fo:inline>
+(:            Yes, you found the witty-taggy thing which really ends the book! :)
     
      case element(tei:cit)
      return
@@ -676,7 +757,7 @@ declare function fo:tei2fo($nodes as node()*) {
    (  let $wordcount := count(tokenize(string-join($node/tei:quote[1]//text(), ' '), '\s+'))
     return
 if( $node/parent::tei:epigraph or ($wordcount ge 50)) then
-                <fo:block
+                <fo:block hyphenate="true"
                     start-indent="1cm"
                     margin-top="6.25pt"
                     margin-bottom="6.25pt">
@@ -706,7 +787,7 @@ if( $node/parent::tei:epigraph or ($wordcount ge 50)) then
       
      return
 if($wordcount ge 50) then
-<fo:block>
+<fo:block hyphenate="true">
                     {
                         if ($node/@xml:lang) then
                             fo:lang($node/@xml:lang)
@@ -767,6 +848,7 @@ else
     case element(tei:p)
         return
                 <fo:block
+                    xml:lang="en"
                     hyphenate="true">{
                         if ($node/preceding-sibling::tei:p) then
                             (attribute text-indent {'0.43cm'})
@@ -777,7 +859,7 @@ else
     
     case element(tei:label)
         return
-            <fo:block>{$node/text()}</fo:block>
+            <fo:block hyphenate="true">{$node/text()}</fo:block>
     
     case element(tei:l)
         return
@@ -818,13 +900,15 @@ else
             (<fo:inline> {
             try{fo:zoteroCit($node/tei:ptr/@target)} 
             catch * {console:log($err:description || string($node/tei:ptr/@target))}}
-            {if($node/tei:citedRange) then ', ' || (let $citRanges := for $cR in $node/tei:citedRange return 
-                                                                            (switch($cR/@unit) 
-                                                                                    case 'paragraph' return '§' 
-                                                                                    case 'footnote' return 'n.' 
-                                                                                    case 'page' return '' 
-                                                                                    default return string($cR/@unit)
-                                                                             || $cR/text()) return string-join($citRanges, ' ')) else ()}</fo:inline>)
+            {if($node/tei:citedRange) then ', ' || (let $citRanges := for $cR in $node/tei:citedRange 
+                                                                                                                            let $unit := switch($cR/@unit) 
+                                                                                                                                                    case 'paragraph' return '§' 
+                                                                                                                                                    case 'footnote' return 'n.' 
+                                                                                                                                                    case 'page' return ' ' 
+                                                                                                                                                    default return (string($cR/@unit) || ' ')
+                                                                                                                          return concat($unit, $cR/text()) 
+                                                                                     return string-join($citRanges, ' ')) 
+                                                                                     else ()}</fo:inline>)
             
     
     case element(tei:figure)
@@ -832,13 +916,13 @@ else
 (:    If your image is not dispalying well, remember to take a good screenshot and modify it to 300dpi.
 if it does not fit to the page set the width attribute in the source file, as that is the one used to set the viewport size to which the image is adapted
 :)
-    <fo:block 
-    id="{string(root($node)/tei:TEI/@xml:id)}{generate-id($node)}"
+    <fo:block  hyphenate="true"
+    id="{string(root($node)/tei:TEI/@xml:id)}{$node/tei:graphic/@xml:id}{generate-id($node)}"
     display-align="center" 
     >
     
     {for $g in $node/tei:graphic return
-   (<fo:block text-align="center" margin-top="3mm" margin-bottom="3mm" page-break-inside="avoid">
+   (<fo:block hyphenate="true" text-align="center" margin-top="3mm" margin-bottom="3mm" page-break-inside="avoid" page-break-after="avoid">
    <fo:external-graphic 
                 src="{let $base := base-uri($node) 
                               let $lastSlash := functx:index-of-string($base, '/')[last()]
@@ -848,7 +932,7 @@ if it does not fit to the page set the width attribute in the source file, as th
                 scaling="uniform" 
                 display-align="center"/>
                 </fo:block>,
-                <fo:block text-align="left" margin-bottom="0.3cm" font-size="smaller" margin-left="5mm" margin-right="5mm" >
+                <fo:block hyphenate="true" text-align="left" margin-bottom="0.3cm" font-size="smaller" margin-left="5mm" margin-right="5mm" page-break-before="avoid">
                 {
                 'Fig.' || (if(contains(string(root($node)/tei:TEI/@xml:id), 'intro')) then ' 0' else replace(string(root($node)/tei:TEI/@xml:id), 'chapter', ' ')) ||'.'||(count($g/preceding::tei:graphic) +1) || ' '}{fo:tei2fo($g/tei:desc)}
                 </fo:block>)
@@ -858,7 +942,7 @@ if it does not fit to the page set the width attribute in the source file, as th
   </fo:block>
     case element(tei:head)
         return
-            <fo:block
+            <fo:block hyphenate="true" page-break-after="avoid"
                 id="{string(root($node)/tei:TEI/@xml:id)}{generate-id($node)}">
                 {
                     if ($node/parent::tei:div[@type = 'chapter']) then
@@ -898,46 +982,20 @@ if it does not fit to the page set the width attribute in the source file, as th
             </fo:block>
     case element(tei:div)
         return
-            if ($node/@type = 'edition') then
-                <fo:block>{
-                        if ($node/@xml:lang) then
-                            fo:lang($node/@xml:lang)
-                        else
-                            ()
-                    }{fo:tei2fo($node/node())}</fo:block>
-            else
-                if ($node/@type = 'textpart') then
-                    
-                    (<fo:block
-                        space-before="3mm">
-                        <fo:inline>
-                            {
-                                if ($node/tei:ab/tei:title/tei:ref)
-                                then
-                                    <fo:basic-link
-                                        external-destination="{$node/tei:ab/tei:title/tei:ref/@target}">{$node/tei:label/text()}</fo:basic-link>
-                                else
-                                    string-join($node/tei:ab/tei:title/text(), '')
-                            }</fo:inline></fo:block>,
-                    <fo:block
-                        space-before="3mm">{fo:tei2fo($node/node()[not(name() = 'label')])}</fo:block>)
-                else
-                    if ($node/@type = 'bibliography') then
-                        fo:tei2fo($node/node())
-                    else
-                        fo:tei2fo($node/node())
+                        <fo:block  hyphenate="true">{if($node/@xml:id) then attribute id {string(root($node)/tei:TEI/@xml:id)||'#'||string($node/@xml:id)} else ()}{fo:tei2fo($node/node())}</fo:block>
     case element(tei:ab)
         return
             if ($node/@type = 'foundation') then
                 (<fo:block
+                hyphenate="true"
                     font-size="1.2em"
                     space-before="2mm"
                     space-after="3mm">{functx:capitalize-first(string($node/@type))}</fo:block>,
-                <fo:block>{fo:tei2fo($node/node())}</fo:block>)
+                <fo:block hyphenate="true">{fo:tei2fo($node/node())}</fo:block>)
             
             else
                 if ($node/@type = 'history') then
-                    <fo:block>{fo:tei2fo($node/node())}</fo:block>
+                    <fo:block hyphenate="true">{fo:tei2fo($node/node())}</fo:block>
                 else
                     fo:tei2fo($node/node()[not(name() = 'title')])
     
@@ -977,6 +1035,7 @@ if it does not fit to the page set the width attribute in the source file, as th
     case element(tei:msItem)
         return
             <fo:block
+            hyphenate="true"
                 id="{string(root($node)/tei:TEI/@xml:id)}{generate-id($node)}"
                 font-family="Ludolfus"
                 space-after="2mm">
@@ -994,6 +1053,7 @@ if it does not fit to the page set the width attribute in the source file, as th
     case element(tei:incipit)
         return
             <fo:block
+            hyphenate="true"
                 margin-left="5mm"
                 id="{string(root($node)/tei:TEI/@xml:id)}{generate-id($node)}"
                 font-style="italic">
@@ -1021,7 +1081,7 @@ if it does not fit to the page set the width attribute in the source file, as th
   {for $column in $node/tei:row[@role='label']//tei:cell
   return
     <fo:table-cell>
-      <fo:block font-weight="bold">{$column/text()}</fo:block>
+      <fo:block hyphenate="true" font-weight="bold">{$column/text()}</fo:block>
     </fo:table-cell>}
   </fo:table-row>
 </fo:table-header>
@@ -1041,6 +1101,7 @@ if it does not fit to the page set the width attribute in the source file, as th
     case element(tei:explicit)
         return
             <fo:block
+            hyphenate="true"
                 margin-left="5mm"
                 id="{string(root($node)/tei:TEI/@xml:id)}{generate-id($node)}"
                 font-style="italic">
@@ -1058,6 +1119,7 @@ if it does not fit to the page set the width attribute in the source file, as th
     case element(tei:colophon)
         return
             <fo:block
+            hyphenate="true"
                 margin-left="5mm"
                 id="{string(root($node)/tei:TEI/@xml:id)}{generate-id($node)}"
                 font-style="italic">
@@ -1119,6 +1181,7 @@ if it does not fit to the page set the width attribute in the source file, as th
     case element(tei:foreign)
         return
             <fo:inline font-style="italic">
+            {if($node[@xml:lang ='gez']) then (attribute hyphenate {'false'}) else ()}
                 {
                     if ($node/@xml:lang) then
                         fo:lang($node/@xml:lang)
@@ -1184,15 +1247,25 @@ if it does not fit to the page set the width attribute in the source file, as th
 margin-left="50mm" margin-top="10mm" margin-bottom="5mm"> <fo:block>{fo:tei2fo($node/node())}</fo:block></fo:block-container>
        case element(ex:egXML)
         return      
-            <fo:block white-space="pre" font-size="smaller" margin-top="3mm" margin-bottom="3mm">
+            <fo:block white-space="pre" font-size="smaller" margin-top="3mm" margin-bottom="3mm" line-height="11.5pt">
+            {$node/node()}
+            </fo:block>
+             case element(tei:eg)
+        return      
+            <fo:block hyphenate="true" white-space="pre" font-size="smaller" margin-top="3mm" margin-bottom="3mm">
             {$node/node()}
             </fo:block>
        case element(tei:term)
         return      
             (<fo:inline font-size="smaller">↗</fo:inline>,
-            <fo:inline id="{generate-id($node)}">
+            <fo:inline id="{string(root($node)/tei:TEI/@xml:id)}{generate-id($node)}{$node/text()}">
             {$node/node()
             }</fo:inline>)
+            case element(tei:code)
+        return      
+            <fo:inline font-family="Noto"  font-size="smaller">
+            {$node/node()}
+            </fo:inline>
        case element(tei:gi)
         return      
             <fo:inline font-family="Noto" font-size="smaller">
@@ -1216,111 +1289,7 @@ margin-left="50mm" margin-top="10mm" margin-bottom="5mm"> <fo:block>{fo:tei2fo($
             $node
 };
 
-declare function fo:titlepage($file, $titleStmt as element(tei:titleStmt), $pubStmt as element(tei:publicationStmt), $title, $id) {
-    <fo:page-sequence
-        master-reference="BM">
-        
-        <fo:flow
-            flow-name="xsl-region-body"
-            font-family="Ludolfus">
-            <fo:block
-                font-size="44pt"
-                text-align="center">
-                {
-                    (if (matches($title, '\p{IsArabic}')) then
-                        (attribute font-family {'coranica'}, attribute writing-mode {'rl'})
-                    else
-                        (),
-                    $title)
-                }
-            </fo:block>
-            <fo:block
-                text-align="center"
-                font-size="20pt"
-                font-style="italic"
-                space-before="2em"
-                space-after="2em">
-                edited by
-            </fo:block>
-            <fo:block
-                text-align="center"
-                font-size="20pt"
-                font-style="italic"
-                space-before="2em"
-                space-after="2em">
-                {fo:tei2fo(root($pubStmt)//tei:editionStmt)
-                }
-            </fo:block>
-            <fo:block
-                text-align="center"
-                font-size="14pt"
-                space-before="2em"
-                space-after="2em">
-                <fo:basic-link
-                    external-destination="{$pubStmt//tei:availability/tei:licence/@target}">{$pubStmt//tei:availability/tei:licence/text()}</fo:basic-link>
-            </fo:block>
-            <fo:block
-                text-align="center"
-                font-size="12pt"
-                space-before="2em"
-                space-after="2em">
-                {$titleStmt//tei:funder/text()}
-            </fo:block>
-            <fo:block
-                text-align="center"
-                font-size="12pt"
-                space-before="2em"
-                space-after="2em">
-                {($pubStmt//tei:authority/text() || ', ' || $pubStmt//tei:publisher/text() || ', ' || $pubStmt//tei:pubPlace/text())}
-            </fo:block>
-        </fo:flow>
-    </fo:page-sequence>
-};
-
-declare function fo:authorToC($nodes as element(tei:author)+){
-for $node in $nodes return
- let $parts := for $w in tokenize($node/text(), ' ')
-            return
-                $w
-            return
-                (:                mock up small caps:)
-                (for $p in $parts
-                return
-                    (<fo:inline>{upper-case(substring($p, 1, 1))}</fo:inline>,
-                    <fo:inline
-                        font-size="0.75em">{upper-case(substring($p, 2))}</fo:inline>,
-                    if (index-of($parts, $p) = count($parts)) then
-                        ()
-                    else
-                        ' '
-                    ), 
-                if ($node/following-sibling::tei:author) then
-                    ', '
-                else
-                    ())
-};
-
-declare function fo:authorheader($nodes as element(tei:author)+){
-for $node in $nodes return
- let $parts := for $w in tokenize($node/text(), ' ')
-            return
-                $w
-            return
-                (:                mock up small caps:)
-                (for $p in $parts
-                return
-                    (<fo:inline>{$p}</fo:inline>,
-                    if (index-of($parts, $p) = count($parts)) then
-                        ()
-                    else
-                        ' '
-                    ), 
-                if ($node/following-sibling::tei:author) then
-                    ', '
-                else
-                    ())
-};
-
+(:~ produces the table of contents and the notes for the reader:)
 declare function fo:table-of-contents() {
     <fo:page-sequence
             initial-page-number="auto-odd"
@@ -1339,6 +1308,7 @@ declare function fo:table-of-contents() {
                         <fo:table-row>
                             <fo:table-cell>
                                 <fo:block
+                                hyphenate="true"
                                     text-align="right"></fo:block>
                             </fo:table-cell>
                             <fo:table-cell>
@@ -1545,7 +1515,9 @@ declare function fo:table-of-contents() {
                             text-align-last="justify"
                             space-after="1pt"
                             font-size="10.5pt"
-                            font-family="Ludolfus" >
+                            font-family="Ludolfus" 
+                             page-break-after="always"
+                            >
                             <fo:inline>Index of Places</fo:inline>
                             <fo:leader
                                 leader-pattern="dots"/>
@@ -1553,10 +1525,35 @@ declare function fo:table-of-contents() {
                                 ref-id="IndexPlaces"/>
                             
                         </fo:block>
+                        <fo:block
+                font-size="12pt"
+                space-before="25.2pt"
+                space-after="12.24pt"
+                font-family="Ludolfus" 
+                font-weight="700" 
+                text-align="center" 
+                display-align="center">Notes for the reader</fo:block>
+                        <fo:block
+                            text-align-last="justify"
+                            space-after="1pt"
+                            font-size="10.5pt"
+                            font-family="Ludolfus" hyphenate="true" language="en">
+                            
+                            <fo:block>Terms, especially abbreviations, which are preceeded by a <fo:inline font-size="smaller">↗</fo:inline> 
+                            have a short definition in the Glossary at the end of the volume. These terms do not appear also in the Index but references to the pages where they are used are provided for each in the Glossary.</fo:block>
+                            
+                            <fo:block>The bibliography of this book is available in Zotero at <fo:basic-link external-destination="https://www.zotero.org/pietroliuzzo/items/collectionKey/Z5MQAVPK"/>.</fo:block>
+                            
+                            <fo:block>The code and the visualizations associated with this book are linked directly in the text where relevant. 
+                            They are all available at the following link in a website which is bound to the present volume: <fo:basic-link
+                            external-destination="https://pietroliuzzo.github.io/DHEth/">https://pietroliuzzo.github.io/DHEth/</fo:basic-link>.
+                        </fo:block>
+                        </fo:block>
         </fo:flow>
     </fo:page-sequence>
 };
 
+(:~ produces the bookmarks for the PDF navigation :)
 declare function fo:bookmarks() {
     <fo:bookmark-tree>
     { for $r in (doc('/db/apps/DHEth/data/front/acknowledgement.xml')//tei:TEI, doc('/db/apps/DHEth/data/front/intro.xml')//tei:TEI)
@@ -1605,7 +1602,162 @@ declare function fo:bookmarks() {
     </fo:bookmark-tree>
 };
 
+(:~ produces the list of figures:)
+declare function fo:list-of-images() {
+    <fo:page-sequence
+            initial-page-number="auto-odd"
+        master-reference="Aethiopica-master" format="i">
+         <fo:static-content
+                flow-name="rest-region-before-even">
+        <fo:table>
+                    <fo:table-column
+                        column-width="30%"/>
+                    <fo:table-column
+                        column-width="40%"/>
+                    <fo:table-column
+                        column-width="30%"/>
+                    
+                    <fo:table-body>
+                        <fo:table-row>
+                            <fo:table-cell>
+                                <fo:block
+                                    text-align="right"></fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell>
+                                <fo:block
+                                    text-align="center"
+                                    font-size="9pt"
+                                    font-family="Ludolfus">List of Figures</fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell><fo:block
+                                    font-size="9pt"
+                                    font-family="Ludolfus"
+                                    text-align="right">
+                                    <fo:page-number/>
+                                    </fo:block>
+                            </fo:table-cell>
+                        </fo:table-row>
+                    </fo:table-body>
+                </fo:table>
+            </fo:static-content>
+            <fo:static-content
+                flow-name="rest-region-before-odd">
+        <fo:table>
+                    <fo:table-column
+                        column-width="30%"/>
+                    <fo:table-column
+                        column-width="40%"/>
+                    <fo:table-column
+                        column-width="30%"/>
+                    
+                    <fo:table-body>
+                        <fo:table-row>
+                            <fo:table-cell>
+                                <fo:block
+                                    font-size="9pt"
+                                    font-family="Ludolfus"
+                                    text-align="left"><fo:page-number/></fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell>
+                                <fo:block
+                                    text-align="center"
+                                    font-size="9pt"
+                                    font-family="Ludolfus">List of Figures</fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell><fo:block
+                                    font-size="9pt"
+                                    font-family="Ludolfus"
+                                    text-align="right">
+                                    
+                                    </fo:block>
+                            </fo:table-cell>
+                        </fo:table-row>
+                    </fo:table-body>
+                </fo:table>
+            </fo:static-content>
+              <fo:static-content
+                flow-name="rest-region-before-first">
+        <fo:table>
+                    <fo:table-column
+                        column-width="30%"/>
+                    <fo:table-column
+                        column-width="40%"/>
+                    <fo:table-column
+                        column-width="30%"/>
+                    
+                    <fo:table-body>
+                        <fo:table-row>
+                            <fo:table-cell>
+                                <fo:block
+                                    text-align="right"></fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell>
+                                <fo:block
+                                    text-align="center"
+                                    font-size="9pt"
+                                    font-family="Ludolfus"></fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell><fo:block
+                                    font-size="9pt"
+                                    font-family="Ludolfus"
+                                    text-align="right"></fo:block>
+                            </fo:table-cell>
+                        </fo:table-row>
+                    </fo:table-body>
+                </fo:table>
+            </fo:static-content>
+          
+            <fo:static-content
+                flow-name="xsl-footnote-separator">
+                <fo:block space-before="5mm" space-after="5mm">
+                <fo:leader leader-length="30%" rule-thickness="0pt"/>
+                </fo:block>
+            </fo:static-content>
+            
+        <fo:flow
+            flow-name="xsl-region-body"
+            font-family="Ludolfus">
+            <fo:block
+                font-size="12pt"
+                space-before="25.2pt"
+                space-after="12.24pt"
+                font-family="Ludolfus" 
+                font-weight="700" 
+                text-align="center" 
+                display-align="center">List of Figures</fo:block>
+               { for $FC in collection('/db/apps/DHEth/data')//tei:figure
+               let $chapterNumber :=  if(contains(string(root($FC)/tei:TEI/@xml:id), 'intro')) then ' 0' 
+                else replace(string(root($FC)/tei:TEI/@xml:id), 'chapter', ' ')
+                
+                group by $chapterNumber
+                order by $chapterNumber
+                return
+                    for $F at $p in $FC
+                    order by $p
+                    return
+                        <fo:block
+                            text-align-last="justify"
+                            space-after="1pt"
+                            font-size="10.5pt"
+                            font-family="Ludolfus" >
+                            <fo:inline font-weight="bold">
+                            {
+                'Fig.' || (if(contains(string(root($F)/tei:TEI/@xml:id), 'intro')) then ' 0' 
+                else replace(string(root($F)/tei:TEI/@xml:id), 'chapter', ' ')) ||'.'||
+                (count($F/tei:graphic/preceding::tei:graphic) +1) || ' '}</fo:inline>
+                <fo:inline>{fo:figDesc2fo($F/tei:graphic/tei:desc/node())}
+                </fo:inline>
+                            <fo:leader
+                                leader-pattern="dots"/>
+                            <fo:page-number-citation
+                                ref-id="{string(root($F)/tei:TEI/@xml:id)}{$F/tei:graphic/@xml:id}{generate-id($F)}"/>
+                            
+                        </fo:block>}
+        </fo:flow>
+    </fo:page-sequence>
+};
 
+(:~ produces the General Bibliography, the Bibliography of Beta maṣāḥǝft entities and the Bibliography of Pleiades entities :)
 declare function fo:bibliography(){                                
 <fo:page-sequence
             initial-page-number="auto-odd"
@@ -1725,7 +1877,7 @@ declare function fo:bibliography(){
                 hyphenate="true">
                 
                 
-                        <fo:block-container>
+                        <fo:block-container page-break-after="always">
 <fo:block id="GeneralBibliography"  font-size="12pt"
                         text-align="center"
                         font-weight='700'
@@ -1734,55 +1886,36 @@ declare function fo:bibliography(){
                                 <fo:block line-height="11pt" font-size="9pt">{fo:zoteroBibfromCitation()}</fo:block>
                                 <!--DHeth-->
                                 </fo:block-container>
-                                 <fo:block-container>
+                                 <fo:block-container page-break-after="always">
 <fo:block id="BMBibliography"  font-size="12pt"
                         text-align="center"
                         font-weight='700'
                         margin-bottom="12.24pt"
+                        page-break-after="avoid"
                         margin-top="25.2pt">Beta maṣāḥǝft Entities</fo:block>,
-                                <fo:block line-height="11pt" font-size="9pt">{fo:zoteroBib('834EY7Z3')}</fo:block>
-<!--DHethBMentities-->
+                                <fo:block line-height="11pt" font-size="9pt" >{fo:zoteroBib('834EY7Z3')}</fo:block>
+
                                 </fo:block-container>
-                                <fo:block-container>
+                                <fo:block-container page-break-after="always">
 <fo:block id="PleiadesResources"  font-size="12pt"
                         text-align="center"
                         font-weight='700'
                         margin-bottom="12.24pt"
+                        page-break-after="avoid"
                         margin-top="25.2pt">Pleiades Resources</fo:block>,
-                                <fo:block line-height="11pt" font-size="9pt">{fo:zoteroBib('UC73ZPJS')}</fo:block>
-<!--DHethBMentities-->
-                                </fo:block-container>
+                                <fo:block line-height="11pt" font-size="9pt">{fo:zoteroBib('UC73ZPJS')}</fo:block>,
+
+</fo:block-container>
                                 </fo:flow>
+                                
+                                
                                 </fo:page-sequence>
-(:
-
-the above is limited to 150 titles!
-
-this is not going to give a proper bibliography, consistent within the paper with the citations.
-citations would need to check that there are no other equal citations and in case this is true add a letter to the citation.
-the bibliography will need to be done with a workflow organization where the article 
-has a colleciton and this scripts asks the api for the bibliography of 
-the collection, not by tag. it will not ensure that the entries are in the paper, 
-only that they are in the bibliography. 
-Also lettered citations will not be calculated in this way. 
-they might be in the bibliography and not in the paper
-:)
-                  (:  for $ptr in distinct-values($r//tei:bibl/tei:ptr/@target)
-                    order by $ptr
-                    return
-                    <fo:block id="{$ptr}"><fo:inline
-                start-indent="5mm" 
-                text-indent="-5mm">{fo:Zotero($ptr)}</fo:inline>
-                               
-            ({for $bib in $r//tei:bibl[tei:ptr/@target = $ptr] 
-            return <fo:basic-link internal-destination="{$ptr}{generate-id($bib)}">
-            <fo:page-number-citation ref-id="{$ptr}{generate-id($bib)}"/>
-            </fo:basic-link>})                               
-         
-                </fo:block>):)};
-         
-         
+};
+               
+(:~ produces the indexes:)
 declare function fo:indexes(){
+
+(:              Could have used  fo:index-page-citation-list see       https://www.antennahouse.com/antenna1/wp-content/uploads/2018/02/index-page-citation-1.pdf:)
 let $all := (collection('/db/apps/DHEth/data/chapters'), collection('/db/apps/DHEth/data/front'))
 return
 <fo:page-sequence
@@ -1903,56 +2036,62 @@ return
                 hyphenate="true">
                 
                 
-                        <fo:block-container>
-<fo:block id="CitedPassages">{(attribute font-weight {'700'},
+                        <fo:block-container text-align="justify">
+<fo:block id="CitedPassages" text-align="justify">{(attribute font-weight {'700'},
                         attribute margin-top {'6.25pt'},
                         attribute margin-bottom {'6.25pt'})}Cited Passages</fo:block>,
-                                {for $placeAttestation in $all//tei:ref[@cRef]
-                                let $ref := $placeAttestation/@cRef
+                                {for $Attestation in $all//tei:ref[@cRef]
+                                let $ref := $Attestation/@cRef
+                                order by $Attestation/text()
                                 group by $r := $ref 
                                 return 
-                                  <fo:block id="{$r}">{
-                                  for $atts in $placeAttestation
+                                  <fo:block id="{$r}" text-align="justify">{
+                                  for $atts in $Attestation
                                   let $name := $atts/text()
                                   group by $name
-                                  return  <fo:block>
-                                  <fo:inline font-style="italic">{$name}</fo:inline>{'          '}{
+                                  return  <fo:block text-align-last="justify">
+                                  <fo:inline font-style="italic">{$name}</fo:inline><fo:leader leader-pattern="dots"/>{
                                   for $att at $p in $atts return(
                                   <fo:page-number-citation
                                  ref-id="{string(root($att)/tei:TEI/@xml:id)}{generate-id($att)}"/>, 
-                                 if($p = count($placeAttestation)) then () else '; ')}
+                                 if($p = count($Attestation)) then () else '; ')}
                                  </fo:block>
                                  }</fo:block> }
                                 </fo:block-container>
-                                 <fo:block-container>
-<fo:block id="IndexPersons">{(attribute font-weight {'700'},
+                                 <fo:block-container text-align="justify">
+<fo:block id="IndexPersons" text-align="justify">{(attribute font-weight {'700'},
                         attribute margin-top {'6.25pt'},
                         attribute margin-bottom {'6.25pt'})}Index of Persons</fo:block>,
-                                {for $placeAttestation in $all//tei:persName
-                                let $ref := $placeAttestation/text()
+                                {for $personAttestation in $all//tei:persName
+                                let $ref := $personAttestation/text()
+                                order by $personAttestation/text()
                                 group by $r := $ref 
                                 return 
-                                <fo:block><fo:inline font-style="italic">{$r}</fo:inline>{'          '}  {for $att at $p in $placeAttestation return  (<fo:page-number-citation
-                                 ref-id="{string(root($att)/tei:TEI/@xml:id)}{generate-id($att)}"/>, if($p = count($placeAttestation)) then () else '; ') }</fo:block> }
+                                <fo:block text-align-last="justify"><fo:inline font-style="italic">{$r}</fo:inline><fo:leader leader-pattern="dots"/>{for $att at $p in $personAttestation return  (<fo:page-number-citation
+                                 ref-id="{string(root($att)/tei:TEI/@xml:id)}{generate-id($att)}"/>, if($p = count($personAttestation)) then () else '; ') }</fo:block> }
                                 </fo:block-container>
-                                 <fo:block-container>
-<fo:block id="IndexPlaces">{(attribute font-weight {'700'},
+                                 <fo:block-container text-align="justify">
+<fo:block id="IndexPlaces" text-align="justify">{(attribute font-weight {'700'},
                         attribute margin-top {'6.25pt'},
                         attribute margin-bottom {'6.25pt'})}Index of Places</fo:block>,
                                   {for $placeAttestation in $all//tei:placeName
                                 let $ref := $placeAttestation/text()
+                                order by $placeAttestation/text()
                                 group by $r := $ref 
                                 return 
-                                <fo:block><fo:inline font-style="italic">{$r}</fo:inline>{'          '}  {for $att at $p in $placeAttestation return  (<fo:page-number-citation
+                                <fo:block text-align-last="justify"><fo:inline font-style="italic">{$r}</fo:inline><fo:leader leader-pattern="dots"/>{for $att at $p in $placeAttestation return  (<fo:page-number-citation
                                 ref-id="{string(root($att)/tei:TEI/@xml:id)}{generate-id($att)}"/>, if($p = count($placeAttestation)) then () else '; ') }</fo:block> }</fo:block-container>
                                 </fo:flow>
                                 </fo:page-sequence>
 };
-         
-declare function fo:main() {
-    
-    <fo:root
-        xmlns:fo="http://www.w3.org/1999/XSL/Format">
+
+(:~ declares the structure of the book and ist main features, calling the previous functions to produce the various parts to the book.:)
+declare function fo:main() {  
+    <fo:root 
+                language="en"
+                hyphenate="true"
+        xmlns:fo="http://www.w3.org/1999/XSL/Format"
+        xmlns:axf="http://www.antennahouse.com/names/XSL/Extensions">
         <fo:layout-master-set>
              <fo:page-sequence-master
                 master-name="Aethiopica-master">
@@ -2144,6 +2283,7 @@ declare function fo:main() {
         </fo:layout-master-set>
         { fo:bookmarks()}     
         {fo:table-of-contents()}
+        {fo:list-of-images()}
         {for $r in (doc('/db/apps/DHEth/data/front/acknowledgement.xml')//tei:TEI, doc('/db/apps/DHEth/data/front/intro.xml')//tei:TEI)
                     return
         <fo:page-sequence
@@ -2261,20 +2401,13 @@ declare function fo:main() {
                 line-height="12.5pt"
                 font-family="Ludolfus"
                 text-align="justify"
-                hyphenate="true">
+                 hyphenate="true">
                 
                 
                         <fo:block-container>{
                                 
                                 fo:tei2fo($r/node()[name() != 'abstract'])
-
-                
-                                (:<fo:block>{
-                                (attribute font-weight {'700'},
-                        attribute margin-bottom {'6.25pt'})}Summary</fo:block>,
-                        <fo:block line-height="11pt" font-size="9pt">{fo:tei2fo($r//tei:abstract/node())}
-                        </fo:block>:)
-                                
+                 
                             }</fo:block-container>
                
                 
@@ -2542,10 +2675,9 @@ declare function fo:main() {
        </fo:root>
 };
 
-
-
-(:fo:main():)
+(:here fo:main() is called to produce the xslfo which is passed to the function render of the xslfo module
+to produce the PDF and the result is streamed so that pointing the browser to this module, the
+Xquery is run and the result produced and sent for download:)
 let $pdf := xslfo:render(fo:main(), "application/pdf", (), $local:fop-config)
-(:let $store := xmldb:store('/db/apps/DHEth/pdfs/', 'DHEth.xml', fo:main()):)
 return
     response:stream-binary($pdf, "media-type=application/pdf", "DHEth.pdf")
