@@ -14,7 +14,7 @@ snap:bond-with ?ruler . \
 
 var tablediv = $("#sparqlTable")
 
-var apicall = 'http://betamasaheft.eu/api/SPARQL/json?query=' + encodeURIComponent(query)
+var apicall = '//betamasaheft.eu/api/SPARQL/json?query=' + encodeURIComponent(query)
 
     $.getJSON(apicall, function (sparqlresult) {
     
@@ -103,9 +103,9 @@ var ids = []
         var els = $("[data-value='"+id+"'][class='MainTitle']")
      //console.log(els)
        /*        the call for the title takes id/subid/title and returns a string*/
-        var restcall = "http://betamasaheft.eu/api/" + escapedid + '/title'
+        var restcall = "//betamasaheft.eu/api/" + escapedid + '/title'
 /*        the call for the clavis ids takes clavis/id WITHOUT anchors and returns a JSON object*/
-        var claviscall = "http://betamasaheft.eu/api/clavis/" + mainid
+        var claviscall = "//betamasaheft.eu/api/clavis/" + mainid
         
 /*        put in the element the title from the api call for it. */
 $(els).load(restcall);
