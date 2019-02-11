@@ -14,14 +14,14 @@ snap:bond-with ?ruler . \
 
 var tablediv = $("#sparqlTable")
 
-var apicall = 'http://betamasaheft.eu/api/SPARQL/json?query=' + encodeURIComponent(query)
+var apicall = 'https://betamasaheft.eu/api/SPARQL/json?query=' + encodeURIComponent(query)
 
     $.getJSON(apicall, function (sparqlresult) {
-    
+
        var results = sparqlresult.results.bindings
        var reslength = results.length
        console.log(reslength)
-    
+
     var table = $('<table class="table table-responsive"><thead><tr><th>Manuscript</th><th>Patron</th><th>Relation</th><th>Ruler</th></tr></thead><tbody></tbody></table>')
 
             $(results).each(function(i){
@@ -70,15 +70,15 @@ function checkforWordCounts() {
 
 
 function printWC() {
-   
+
    $(".WordCount").each(function () {
       var el = this
-      var MSid = $(this).data('msid')  
-        var Wid = $(this).data('wid') 
+      var MSid = $(this).data('msid')
+        var Wid = $(this).data('wid')
          var WDcall = "/api/WordCount/" + MSid + '/' + Wid
          $(el).load(WDcall)
     });
-    
+
 };
 
 
@@ -92,24 +92,24 @@ var ids = []
          if(ids.indexOf(str) == -1){ids.push(str)} else {}
 
     });
-    
+
     //console.log(ids)
-    
+
     $(ids).each(function (index, id) {
        var escapedid = id.replace("#", "/")
        var mainid = ''
         if(id.match('#')){mainid = id.substring(0, id.indexOf('#'))} else {mainid = id}
-       
+
         var els = $("[data-value='"+id+"'][class='MainTitle']")
      //console.log(els)
        /*        the call for the title takes id/subid/title and returns a string*/
-        var restcall = "http://betamasaheft.eu/api/" + escapedid + '/title'
+        var restcall = "https://betamasaheft.eu/api/" + escapedid + '/title'
 /*        the call for the clavis ids takes clavis/id WITHOUT anchors and returns a JSON object*/
-        var claviscall = "http://betamasaheft.eu/api/clavis/" + mainid
-        
+        var claviscall = "https://betamasaheft.eu/api/clavis/" + mainid
+
 /*        put in the element the title from the api call for it. */
 $(els).load(restcall);
- 
+
 /*        if the title of a literary work is requested, then add after the title string a equal sign, the clavis abbreviation and the corresponding value  */
         if (escapedid.match("^LIT") && !escapedid.match("IHA$")) {
 /*        calls the clavis api*/
@@ -121,7 +121,7 @@ $(els).load(restcall);
                 $.each(data.clavis, function (i, item) {
                 if(item !== null){
                     var clavis = "<span> = " + i + " " + item + '</span>'
-                 //console.log(clavis); 
+                 //console.log(clavis);
                  $(clavis).insertAfter($(els))
                  }
                 })
