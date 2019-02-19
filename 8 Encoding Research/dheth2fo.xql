@@ -23,6 +23,8 @@ declare namespace functx = "http://www.functx.com";
 contains the HTML output of Zotero produced in generateBibliography.xql:)
 declare namespace biblio = 'dheth.biblio';
 
+declare variable $local:title := 'Digital Approaches to Eritrean and Ethiopian Studies';
+
 (:~ The location of the Zotero Bibliography, in this case the user library of Pietro Liuzzo:)
 declare variable $local:zotcollection := 'https://api.zotero.org/users/1405276/';
 
@@ -570,22 +572,22 @@ declare function fo:tei2fo($nodes as node()*) {
                     <fo:inline>{
                     switch($node/@type) 
                     case 'internal' return (
-                    let $pointer := substring-after($node/@corresp, '#')
+                    let $pointer := substring-after($node/@target, '#')
                     let $nodePointer := collection($config:data-root)//id($pointer)
-                    let $pointerid := string(root($nodePointer)/tei:TEI/@xml:id) || string($node/@corresp)
+                    let $pointerid := string(root($nodePointer)/tei:TEI/@xml:id) || string($node/@target)
                     return
                                ('p. ', <fo:basic-link internal-destination="{$pointerid}"><fo:page-number-citation
                                 ref-id="{$pointerid}"/></fo:basic-link>
                                 )
                                 )
-                     case 'ins' return <fo:basic-link external-destination="http://betamasaheft.eu/{$node/@cRef}"><fo:inline id="{string(root($node)/tei:TEI/@xml:id)}{generate-id($node)}ins">{$node/text()}</fo:inline></fo:basic-link>
-                     case 'BM' return <fo:basic-link external-destination="http://betamasaheft.eu/{$node/@target}">CAe {substring($node/text(), 4,4)}, ID: {$node/text()}</fo:basic-link>
+                     case 'ins' return <fo:basic-link external-destination="https://betamasaheft.eu/{$node/@cRef}"><fo:inline id="{string(root($node)/tei:TEI/@xml:id)}{generate-id($node)}ins">{$node/text()}</fo:inline></fo:basic-link>
+                     case 'BM' return <fo:basic-link external-destination="https://betamasaheft.eu/{$node/@target}">CAe {substring($node/text(), 4,4)}, ID: {$node/text()}</fo:basic-link>
                      case 'chapter' return 
-                     let $chid := substring-after($node/@corresp, '#')
+                     let $chid := substring-after($node/@target, '#')
                      let $chapter := (collection('/db/apps/DHEth/data/chapters')//id($chid), collection('/db/apps/DHEth/data/front')//id($chid))
                      return
-                     <fo:basic-link internal-destination="{$chid}{generate-id($chapter//tei:titleStmt/tei:title)}"><fo:inline>{'Ch. ' || substring-after($node/@corresp, '#chapter')}</fo:inline></fo:basic-link>
-                    case 'figure' return (let $corresp := substring-after($node/@corresp, '#') 
+                     <fo:basic-link internal-destination="{$chid}{generate-id($chapter//tei:titleStmt/tei:title)}"><fo:inline>{if($chid = 'intro') then 'Intro ' else 'Ch. ' || substring-after($node/@target, '#chapter')}</fo:inline></fo:basic-link>
+                    case 'figure' return (let $corresp := substring-after($node/@target, '#') 
                                                                                 let $figure:= root($node)//tei:*[@xml:id=$corresp]
                                                               return  ('Fig. '   || (
                                                                                     if(contains(string(root($node)/tei:TEI/@xml:id), 'intro'))
@@ -593,7 +595,7 @@ declare function fo:tei2fo($nodes as node()*) {
                                                                                     else replace(string(root($node)/tei:TEI/@xml:id), 'chapter', ' '))
                                                                                     ||'.'||(count($figure/preceding::tei:graphic) +1) )
                     )
-                    default return $node/@corresp} </fo:inline>
+                    default return $node/@target} </fo:inline>
                    
                    else
 (:     if the url is too long, add here and there              &#x200b;   and it will break there if needed  :)
@@ -825,7 +827,7 @@ declare function fo:tei2fo($nodes as node()*) {
    (  let $wordcount := count(tokenize(string-join($node/tei:quote[1]//text(), ' '), '\s+'))
     return
     if ( $node/parent::tei:epigraph) then
-                <fo:block hyphenate="true"
+                <fo:block hyphenate="false"
                     start-indent="1cm"
                     margin-top="6.25pt"
                     margin-bottom="6.25pt">
@@ -838,7 +840,7 @@ declare function fo:tei2fo($nodes as node()*) {
                     {
                     for $q at $p in $node//tei:quote
                     return
-                    <fo:block hyphenate="true" page-break-after="avoid">
+                    <fo:block hyphenate="false" page-break-after="avoid">
                     {
                         if ($q/@xml:lang) then
                         ($q/@xml:lang,
@@ -1409,7 +1411,7 @@ margin-bottom="5mm"> <fo:block>{fo:tei2fo($node/tei:cit)}</fo:block></fo:block-c
             <fo:inline font-family="Noto" font-size="smaller">&lt;{$node/node()}&gt;</fo:inline>
             case element(tei:att)
         return      
-           <fo:basic-link external-destination="http://betamasaheft.eu/Guidelines/?id=@{$node/text()}"><fo:inline font-family="Noto" font-size="smaller">@{$node/node()}</fo:inline></fo:basic-link>
+           <fo:basic-link external-destination="https://betamasaheft.eu/Guidelines/?id=@{$node/text()}"><fo:inline font-family="Noto" font-size="smaller">@{$node/node()}</fo:inline></fo:basic-link>
     case element()
         return
             fo:tei2fo($node/node())
@@ -1433,8 +1435,7 @@ declare function fo:titlepage() {
                 font-family="Ludolfus" 
                 font-weight="700" 
                 text-align="center" 
-                display-align="center"><fo:block>Written Artefacts in the Web</fo:block>
-<fo:block>A View from Ethiopian and Eritrean Studies</fo:block></fo:block-container>
+                display-align="center"><fo:block>{$local:title}</fo:block></fo:block-container>
             <fo:block
                 font-size="12pt"
                 space-before="25.2pt"
@@ -1580,8 +1581,7 @@ declare function fo:table-of-contents() {
                 font-family="Ludolfus" 
                 font-weight="700" 
                 text-align="center" 
-                display-align="center"><fo:block>Written Artefacts in the Web</fo:block>
-<fo:block>A View from Ethiopian and Eritrean Studies</fo:block></fo:block-container>
+                display-align="center"><fo:block>{$local:title}</fo:block></fo:block-container>
             <fo:block
                 font-size="12pt"
                 space-before="25.2pt"
@@ -1765,7 +1765,7 @@ declare function fo:table-of-contents() {
                             <fo:block>In the PDF, elements are linked to their specification in the TEI guidelines, attributes are linked to their page in the Beta maṣāḥǝft Guidelines, 
                             classes and properties are linked to a search in <fo:basic-link external-destination="https://lov.linkeddata.es/dataset/lov">Linked Open Vocabularies</fo:basic-link>.</fo:block>
                             <fo:block>All entities in Beta maṣāḥǝft are accompained by their identifier. 
-                            Appending this identifier to the home URL of Beta maṣāḥǝft <fo:basic-link external-destination="http://betamasaheft.eu/">http://betamasaheft.eu/</fo:basic-link> will redirect 
+                            Appending this identifier to the home URL of Beta maṣāḥǝft <fo:basic-link external-destination="https://betamasaheft.eu/">https://betamasaheft.eu/</fo:basic-link> will redirect 
                             to the most up to date version of the information about the item. 
                             For literary works, the CAe number is also provided, linking to the main entry 
                             for the textual unit in the PDF.</fo:block>
@@ -1779,8 +1779,6 @@ declare function fo:table-of-contents() {
                             They are all available at the following link in a website which is bound to the present volume: <fo:basic-link
                             external-destination="https://pietroliuzzo.github.io/DHEth/">https://pietroliuzzo.github.io/DHEth/</fo:basic-link>. These will not be modified, unless for corrections, after the publication of this book.
                         </fo:block>
-                        <fo:block>All URLs and URIs for Beta maṣāḥǝft are given with http:// protocol, although at the time of writing a procedure was started to move to https:// the functioning 
-                        of these links will be maintained but cannot be guaranteed.</fo:block>
                         <fo:block>The data associated with the book is also stored by the Zentrum für nachhaltiges Forschungsdatenmanagement of the University of Hamburg.</fo:block>
                         </fo:block-container>
         </fo:flow>
@@ -2345,7 +2343,7 @@ return
                                   let $name := $atts/text()
                                   group by $name
                                   return  <fo:block start-indent="5mm" text-indent="-5mm" margin-bottom="1mm">
-                                  <fo:basic-link external-destination="http://betamasaheft.eu/{string($r)}">{if(contains($r, 'RIE')) then <fo:inline font-style="italic">RIÉ </fo:inline> else ''} <fo:inline>{$name}</fo:inline></fo:basic-link>, {
+                                  <fo:basic-link external-destination="https://betamasaheft.eu/{string($r)}">{if(contains($r, 'RIE')) then <fo:inline font-style="italic">RIÉ </fo:inline> else ''} <fo:inline>{$name}</fo:inline></fo:basic-link>, {
                                   for $att at $p in $atts return(
                                   <fo:basic-link internal-destination="{string(root($att)/tei:TEI/@xml:id)}{generate-id($att)}ins"><fo:page-number-citation
                                  ref-id="{string(root($att)/tei:TEI/@xml:id)}{generate-id($att)}ins"/></fo:basic-link>, 
