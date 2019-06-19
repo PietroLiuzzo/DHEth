@@ -13,14 +13,14 @@ declare option output:method "json";
 could have been limited to t:title inside t:msItem with //t:msItem/t:title instead of //t:title 
 :)
 let $mss := collection($config:data-rootMS)//t:title[contains(@ref , $work)]
-for $ms in $mss 
+for $ms in $mss
 let $repo := root($ms)//t:repository
-let $id := string(root($ms)/t:TEI/@xml:id)
+let $manuscriptName := string(root($ms)/t:TEI/@xml:id)
 let $date := root($ms)//t:origDate
-let $stringDate := for $d in $date 
+let $stringDate := for $d in $date
 let $atts := for $att in ($d/@notBefore, $d/@notAfter, $d/@when) return string($att)
-                        return min($atts)
-let $getcoor := coord:getCoords($repo/@ref)
-let $reponame := titles:printTitleMainID($repo/@ref)
-return
-             $reponame || ';' || $getcoor || ';' || $id || ';' || min($stringDate)
+return min($atts)
+let $coordinates := coord:getCoords($repo/@ref)
+let $repositoryPlaceName := titles:printTitleMainID($repo/@ref)
+   return
+           $repositoryPlaceName || ';' || $coordinates || ';' || $manuscriptName || ';' || min($stringDate)
