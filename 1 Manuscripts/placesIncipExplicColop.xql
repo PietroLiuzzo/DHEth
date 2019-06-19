@@ -14,7 +14,8 @@ let $colophonPlaces := $config:collection-rootMS//t:colophon//t:placeName
 (: put them all in one same sequence :)
 let $all := ($incipitPlaces, $explicitPlaces, $colophonPlaces)
 (: select repositories of the manuscripts where the placeName selected before occur :)
-let $repositories := for $mss in $all let $root := root($mss) 
+let $repositories := for $mss in $all 
+                                let $root := root($mss)/t:TEI 
 (:we need to group, otherways we would have the same repository for each placeName attested.:)
                                             group by $R := $root  
                                           return $R//t:repository(:merge the list of placeNames and current repositories and loop through it:)
